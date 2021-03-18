@@ -60,7 +60,7 @@ public class LoginController implements Initializable {
         jsonObject.put("itEmail", email);
         jsonObject.put("itPassword", Encypter.hashMD5(pass));
 
-        ConnAPI connAPI = new ConnAPI("admin/login", "POST", true);
+        ConnAPI connAPI = new ConnAPI("admin/login", "POST", false);
         connAPI.setData(jsonObject);
         connAPI.establishConn();
 
