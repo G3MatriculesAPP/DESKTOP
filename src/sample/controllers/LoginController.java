@@ -60,7 +60,7 @@ public class LoginController implements Initializable {
         jsonObject.put("itEmail", email);
         jsonObject.put("itPassword", Encypter.hashMD5(pass));
 
-        ConnAPI connAPI = new ConnAPI("admin/login", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/admin/login", "POST", false);
         connAPI.setData(jsonObject);
         connAPI.establishConn();
 
@@ -80,6 +80,8 @@ public class LoginController implements Initializable {
                 System.out.println("[DEBUG] - Datos introducidos incorrectos...");
                 break;
         }
+
+        connAPI.closeConn();
     }
 
     private void gotoLogin() {

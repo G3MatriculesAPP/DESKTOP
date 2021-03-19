@@ -1,18 +1,26 @@
 package sample.models;
 
+import javafx.scene.Node;
+
 import java.util.Date;
 
-public class Modul {
+public class Modul extends Node {
 
     private String codiModul;
     private String nomModul;
-    private int duradaModul;
+    private int duradaMinModul;
+    private int duradaMaxModul;
+    private Date dataFiModul;
     private Date dataIniciModul;
 
-    public Modul(String codiModul, String nomModul, int duradaModul, Date dataIniciModul) {
+    public Modul(){}
+
+    public Modul(String codiModul, String nomModul, int duradaMinModul, int duradaMaxModul, Date dataFiModul, Date dataIniciModul) {
         this.codiModul = codiModul;
         this.nomModul = nomModul;
-        this.duradaModul = duradaModul;
+        this.duradaMinModul = duradaMinModul;
+        this.duradaMaxModul = duradaMaxModul;
+        this.dataFiModul = dataFiModul;
         this.dataIniciModul = dataIniciModul;
     }
 
@@ -32,12 +40,28 @@ public class Modul {
         this.nomModul = nomModul;
     }
 
-    public int getDuradaModul() {
-        return duradaModul;
+    public int getDuradaMinModul() {
+        return duradaMinModul;
     }
 
-    public void setDuradaModul(int duradaModul) {
-        this.duradaModul = duradaModul;
+    public void setDuradaMinModul(int duradaMinModul) {
+        this.duradaMinModul = duradaMinModul;
+    }
+
+    public int getDuradaMaxModul() {
+        return duradaMaxModul;
+    }
+
+    public void setDuradaMaxModul(int duradaMaxModul) {
+        this.duradaMaxModul = duradaMaxModul;
+    }
+
+    public Date getDataFiModul() {
+        return dataFiModul;
+    }
+
+    public void setDataFiModul(Date dataFiModul) {
+        this.dataFiModul = dataFiModul;
     }
 
     public Date getDataIniciModul() {
@@ -50,6 +74,6 @@ public class Modul {
 
     @Override
     public String toString() {
-        return codiModul + " "+ nomModul ;
+        return nomModul;
     }
 }

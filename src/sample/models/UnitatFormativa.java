@@ -7,14 +7,14 @@ public class UnitatFormativa {
     private String codiUF;
     private String nomUF;
     private int duradaUF;
-    private Date dataIniciUF;
     private int tipusUF;
+
+    public UnitatFormativa(){}
 
     public UnitatFormativa(String codiUF, String nomUF, int duradaUF, Date dataIniciUF, int tipusUF) {
         this.codiUF = codiUF;
         this.nomUF = nomUF;
         this.duradaUF = duradaUF;
-        this.dataIniciUF = dataIniciUF;
         this.tipusUF = tipusUF;
     }
 
@@ -42,14 +42,6 @@ public class UnitatFormativa {
         this.duradaUF = duradaUF;
     }
 
-    public Date getDataIniciUF() {
-        return dataIniciUF;
-    }
-
-    public void setDataIniciUF(Date dataIniciUF) {
-        this.dataIniciUF = dataIniciUF;
-    }
-
     public int getTipusUF() {
         return tipusUF;
     }
@@ -60,12 +52,6 @@ public class UnitatFormativa {
 
     @Override
     public String toString() {
-        return "UnitatFormativa{" +
-                "codiUF='" + codiUF + '\'' +
-                ", nomUF='" + nomUF + '\'' +
-                ", duradaUF=" + duradaUF +
-                ", dataIniciUF=" + dataIniciUF +
-                ", tipusUF=" + tipusUF +
-                '}';
+        return nomUF;
     }
 }

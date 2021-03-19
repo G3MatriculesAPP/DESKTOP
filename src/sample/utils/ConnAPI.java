@@ -110,4 +110,8 @@ public class ConnAPI {
         return 0;
     }
 
+    public void closeConn(){
+        conn.disconnect();
+    }
+
 }
