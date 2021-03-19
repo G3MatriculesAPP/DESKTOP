@@ -12,6 +12,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import sample.interfaces.impl.CicleImpl;
 import sample.interfaces.impl.ModulImpl;
+import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
@@ -27,6 +28,7 @@ public class DashboardController implements Initializable {
 
 	CicleImpl cicleManager = new CicleImpl();
 	ModulImpl modulManager = new ModulImpl();
+	UnitatFormativaImpl ufManager = new UnitatFormativaImpl();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,8 +62,17 @@ public class DashboardController implements Initializable {
 		for (Modul m : modulsList) {
 			ListView<UnitatFormativa> ufListView = new ListView<>();
 			TitledPane pane = new TitledPane(m.getNomModul(), ufListView);
+			pane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) ->{
+				if (isNowExpanded){
+					List<UnitatFormativa> ufList = ufManager.getAllUFSFromCicleByModul(idCicle, modulsList.indexOf(m));
+					ObservableList<UnitatFormativa> ufMenu = FXCollections.observableArrayList();
+					ufMenu.addAll(ufList);
+					ufListView.getItems().setAll(ufMenu);
+				}
+			});
 			acModul.getPanes().add(pane);
 		}
+
 
 
 
