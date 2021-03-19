@@ -39,6 +39,7 @@ public class DashboardController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
 		getAllCicles();
+		
 		bCSV.setOnAction(event -> {
 	        FileChooser fileChooser = new FileChooser();
 	        fileChooser.setTitle("Buscar CSV");
