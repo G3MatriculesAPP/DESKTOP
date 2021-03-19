@@ -10,14 +10,12 @@
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.DashboardController">
    <children>
       <Text layoutX="64.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cicles :" wrappingWidth="52.53670883178711" />
-
-      <ComboBox fx:id="cBCicles" layoutX="127.0" layoutY="102.0" prefHeight="30.0" prefWidth="244.0" />
-      <Accordion id="acModuls" fx:id="acModuls" layoutX="399.0" layoutY="102.0" prefWidth="262.0" />
-      <AnchorPane layoutX="127.0" layoutY="162.0">
+      <ComboBox fx:id="cmbCicles" layoutX="127.0" layoutY="102.0" onAction="#getModuls" prefHeight="30.0" prefWidth="244.0" />
+      <Pane layoutX="393.0" layoutY="87.0" prefHeight="600.0" prefWidth="400.0">
          <children>
-            <Button fx:id="bCCSV" mnemonicParsing="false" onAction="#busc" prefHeight="26.0" prefWidth="244.0" text="Carregar fitxer de cicles CSV" />
+            <Accordion fx:id="acModul" prefWidth="400.0" />
          </children>
-      </AnchorPane>
-
+      </Pane>
+      <Button fx:id="bCSV" layoutX="127.0" layoutY="152.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="244.0" text="Carregar CSV cicles" />
    </children>
 </AnchorPane>
