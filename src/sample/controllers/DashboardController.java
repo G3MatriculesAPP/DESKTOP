@@ -2,81 +2,69 @@ package sample.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import sample.interfaces.impl.CicleImpl;
+import sample.interfaces.impl.ModulImpl;
 import sample.models.Cicle;
 import sample.models.Modul;
+import sample.models.UnitatFormativa;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
-	@FXML
-	private ComboBox<Cicle> cBCicles;
 
-	@FXML
-	private Accordion acModuls;
+	@FXML	private ComboBox<Cicle> cmbCicles;
+	@FXML	private Accordion acModul;
+
+	CicleImpl cicleManager = new CicleImpl();
+	ModulImpl modulManager = new ModulImpl();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		List <Cicle> patata = MocaCicles();
-		ObservableList<Cicle> cicles = FXCollections.observableArrayList();
-		cicles.addAll(patata);
-		cBCicles.setItems(cicles);
-		
-		List <Modul> moniato = MocaModul();
-		
-		for(int i=0; i<moniato.size(); i++) {
-			
-			TitledPane pane1 = new TitledPane( moniato.get(i).toString() , new Label("UFs"));
-	      
 
-	        acModuls.getPanes().add(pane1);
-	        
-			
-		}
-		
-		
-		
+		getAllCicles();
+
 	}
-	
-	public List<Cicle> MocaCicles() {
-		ArrayList <Cicle> patata = new ArrayList<Cicle>();
-		for(int i=0; i<10; i++) {
-			
-			java.util.Date fecha = new Date();
-			
-			Cicle c= new Cicle( "hola" , "nom".concat( Integer.toString(i+1)), i , fecha, 1 );
-			patata.add(c);
-			
-		}
-		List <Cicle> Kartofen=patata; 
-		return Kartofen;
+
+	private void getAllCicles(){
+
+		// getAllCicles()
+		// Obtiene la información ya parseada de la API y la añade al ComboBox
+
+		List<Cicle> ciclesList = cicleManager.getAllCicles();
+		ObservableList<Cicle> ciclesMenu = FXCollections.observableArrayList();
+		ciclesMenu.addAll(ciclesList);
+		cmbCicles.setItems(ciclesMenu);
+
 	}
-	
-	public List<Modul> MocaModul(){
-		ArrayList <Modul> moniato = new ArrayList<Modul>();
-		for(int i=0; i<10; i++) {
 
-			java.util.Date fecha = new Date();
+	@FXML
+	void getModuls(ActionEvent event){
 
-			Modul c= new Modul( "hola" , "M0".concat( Integer.toString(i+1)), i , fecha );
-			moniato.add(c);
+		// getModuls()
+		// Al pusar en un CICLE se obtienen todos su MODULS y se añaden
 
+		acModul.getPanes().clear();
+
+		String idCicle = cmbCicles.getSelectionModel().getSelectedItem().getIdCicle();
+		List<Modul> modulsList = modulManager.getAllModulsByCicle(idCicle);
+		for (Modul m : modulsList) {
+			ListView<UnitatFormativa> ufListView = new ListView<>();
+			TitledPane pane = new TitledPane(m.getNomModul(), ufListView);
+			acModul.getPanes().add(pane);
 		}
-		List <Modul> subkartoffel = moniato;
-		return subkartoffel;
+
+
+
 	}
 
 }
