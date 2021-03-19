@@ -62,20 +62,13 @@ public class DashboardController implements Initializable {
 
 
 	}
-	
+
 	@FXML
-    void busc(ActionEvent event) {
-		FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Buscar csv ciclos");
+	void busc(ActionEvent event) {
+		
+		
 
-        // Agregar filtros para facilitar la busqueda
-        fileChooser.getExtensionFilters().addAll(
-                
-                new FileChooser.ExtensionFilter("CSV", "*.csv")
-        );
 
-       
-        
     }
 	
 	public List<Cicle> MocaCicles() {
