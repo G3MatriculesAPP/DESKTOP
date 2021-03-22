@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ImportCSVController">
    <children>
-      <ListView fx:id="listView" layoutX="15.0" layoutY="15.0" prefHeight="450.0" prefWidth="450.0" />
+      <ListView fx:id="listView" layoutX="15.0" layoutY="15.0" prefHeight="450.0" prefWidth="450.0" stylesheets="@css/importCSV.css" />
       <Button fx:id="btnSelect" layoutX="480.0" layoutY="349.0" mnemonicParsing="false" onMouseClicked="#selectAll" prefHeight="50.0" prefWidth="225.0" text="SELEC. TOTS" />
       <Button fx:id="btnImport" layoutX="480.0" layoutY="415.0" mnemonicParsing="false" onMouseClicked="#importData" prefHeight="50.0" prefWidth="225.0" text="IMPORTAR!" />
    </children>

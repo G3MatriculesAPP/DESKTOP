@@ -54,6 +54,8 @@ public class DashboardController implements Initializable {
 	        );
 
 	        File csvFile = fileChooser.showOpenDialog(bCSV.getScene().getWindow());
+
+
 			JSONArray arrayJSON = new JSONArray();
 
 	        if (csvFile != null) {
@@ -77,7 +79,7 @@ public class DashboardController implements Initializable {
 	private void getAllCicles(){
 
 		// getAllCicles()
-		// Obtiene la información ya parseada de la API y la añade al ComboBox
+		// Obtiene la informaciÃ³n ya parseada de la API y la aÃ±ade al ComboBox
 
 		List<Cicle> ciclesList = cicleManager.getAllCicles();
 		ObservableList<Cicle> ciclesMenu = FXCollections.observableArrayList();
@@ -90,7 +92,7 @@ public class DashboardController implements Initializable {
 	void getModuls(ActionEvent event){
 
 		// getModuls()
-		// Al pusar en un CICLE se obtienen todos su MODULS y se añaden
+		// Al pusar en un CICLE se obtienen todos su MODULS y se aÃ±aden
 
 		acModul.getPanes().clear();
 
