@@ -10,20 +10,21 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.DashboardController">
    <children>
-      <Text layoutX="53.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cicles :" wrappingWidth="61.336727142333984">
+      <Text layoutX="147.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CICLES:" wrappingWidth="250.0">
          <font>
-            <Font size="19.0" />
+            <Font name="Montserrat-Regular" size="45.0" />
          </font></Text>
-      <ComboBox fx:id="cmbCicles" layoutX="127.0" layoutY="102.0" onAction="#getModuls" prefHeight="30.0" prefWidth="244.0" promptText="cicles..." />
-      <Button fx:id="bCSV" layoutX="127.0" layoutY="152.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="244.0" text="Carregar CSV cicles">
+      <ComboBox fx:id="cmbCicles" layoutX="147.0" layoutY="118.0" onAction="#getModuls" prefHeight="50.0" prefWidth="500.0" promptText="cicles..." />
+      <Button fx:id="bCSV" layoutX="607.0" layoutY="60.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="34.0" style="-fx-background-radius: 15;" stylesheets="@css/dashboard.css" text="+">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="478.0" layoutY="102.0" prefHeight="544.0" prefWidth="416.0">
+      <ScrollPane layoutX="695.0" layoutY="22.0" prefHeight="670.0" prefWidth="560.0">
          <content>
             <Accordion fx:id="acModul" prefWidth="400.0" />
          </content>
       </ScrollPane>
+      <AnchorPane layoutX="25.0" layoutY="25.0" prefHeight="670.0" prefWidth="100.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 15;" />
    </children>
 </AnchorPane>

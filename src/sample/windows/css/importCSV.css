@@ -1,6 +1,57 @@
-.button{
+
+
+.button {
     -fx-background-color: #4E68F1;
     -fx-background-radius: 30;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 20;
+}
+
+.list-cell{
+
+}
+
+.list-cell:even{
+    -fx-background-color: #FFFFFF;
+    -fx-font-size: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.list-cell:odd{
+    -fx-background-color: #F2F2F2;
+    -fx-font-size: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.list-cell:even{
+    -fx-background-color: #F2F2F2;
+    -fx-font-size: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.list-cell:odd:pressed{
+    -fx-background-color: #4E68F1;
+    -fx-font-size: 18;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.list-cell:even:pressed{
+    -fx-background-color: #4E68F1;
+    -fx-font-size: 18;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.scroll-bar:vertical{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+    -fx-padding: 10 10 20 0;
+}
+
+.scroll-bar:vertical .thumb{
+    -fx-background-color :#4E68F1;
+
 }

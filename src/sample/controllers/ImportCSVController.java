@@ -26,8 +26,6 @@ public class ImportCSVController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        setData();
-
     }
 
     private void setData(){
@@ -97,5 +95,7 @@ public class ImportCSVController implements Initializable {
 
     public void setImportedJSON(JSONArray importedJSON) {
         this.importedJSON = importedJSON;
+        setData();
+
     }
 }
