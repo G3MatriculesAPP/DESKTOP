@@ -99,13 +99,17 @@ public class Parser {
 
 	private static Map<String, List<CSVRecord>> getCiclosAgrupados(CSVParser csvParser) {
 		Map<String, List<CSVRecord>> ciclosAgrupados = new HashMap<String, List<CSVRecord>>();
+		boolean firstRow = true;
 		for (CSVRecord csvRecord : csvParser) {
-			if (!ciclosAgrupados.containsKey(csvRecord.get(0))) {
-				List<CSVRecord> list = new ArrayList<CSVRecord>();
-				list.add(csvRecord);
-				ciclosAgrupados.put(csvRecord.get(0), list);
-			} else
-				ciclosAgrupados.get(csvRecord.get(0)).add(csvRecord);
+			if (!firstRow) {
+				if (!ciclosAgrupados.containsKey(csvRecord.get(0))) {
+					List<CSVRecord> list = new ArrayList<CSVRecord>();
+					list.add(csvRecord);
+					ciclosAgrupados.put(csvRecord.get(0), list);
+				} else
+					ciclosAgrupados.get(csvRecord.get(0)).add(csvRecord);
+			}
+			firstRow = false;
 		}
 		return ciclosAgrupados;
 	}
