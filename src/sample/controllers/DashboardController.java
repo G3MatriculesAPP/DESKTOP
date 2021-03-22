@@ -13,10 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import org.json.JSONArray;
 import sample.interfaces.impl.CicleImpl;
 import sample.interfaces.impl.ModulImpl;
@@ -24,6 +22,7 @@ import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
+import sample.utils.Parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class DashboardController implements Initializable {
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
 	@FXML   private Button bCSV;
-	
+
 	CicleImpl cicleManager = new CicleImpl();
 	ModulImpl modulManager = new ModulImpl();
 	UnitatFormativaImpl ufManager = new UnitatFormativaImpl();
@@ -45,26 +44,23 @@ public class DashboardController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
 		getAllCicles();
-		
+
 		bCSV.setOnAction(event -> {
-	        FileChooser fileChooser = new FileChooser();
-	        fileChooser.setTitle("Importar cicles");
-	        fileChooser.getExtensionFilters().addAll(
-	                new FileChooser.ExtensionFilter("CSV", "*.csv")
-	        );
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Importar cicles");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("CSV", "*.csv")
+					);
 
-	        File csvFile = fileChooser.showOpenDialog(bCSV.getScene().getWindow());
-
-
-			JSONArray arrayJSON = new JSONArray();
-
-	        if (csvFile != null) {
+			File csvFile = fileChooser.showOpenDialog(bCSV.getScene().getWindow());
+			if (csvFile != null) {
 				try {
+					JSONArray jsonArray = Parser.parseCiclesCSV(csvFile);
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSV.fxml"));
 					Stage stage = new Stage();
 					Parent root = loader.load();
 					ImportCSVController importCSVController = loader.getController();
-					importCSVController.setImportedJSON(arrayJSON);
+					importCSVController.setImportedJSON(jsonArray);
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
@@ -89,7 +85,7 @@ public class DashboardController implements Initializable {
 	}
 
 	@FXML
-	void getModuls(ActionEvent event){
+	void getModuls(ActionEvent event) {
 
 		// getModuls()
 		// Al pusar en un CICLE se obtienen todos su MODULS y se añaden
@@ -111,10 +107,6 @@ public class DashboardController implements Initializable {
 			});
 			acModul.getPanes().add(pane);
 		}
-
-
-
-
 	}
 
 }

@@ -24,18 +24,12 @@ public class ImportCSVController implements Initializable {
     private ArrayList<JSONObject> arrayJSON = new ArrayList<>();
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {}
 
-        setData();
-
-    }
-
+    /**
+     * A través de los datos del CSV se crea por cada CICLE una fila con el nombre del ciclo y con una CHECKBOX por defecto premarcada.
+     */
     private void setData(){
-
-        // setData()
-        // A través de los datos del CSV se crea por cada CICLE una fila con el nombre del ciclo y con una CHECKBOX
-        // por defecto premarcada.
-
         ObservableList<JSONObject> observableList = FXCollections.observableArrayList();
         for (int i = 0; i < importedJSON.length(); i++){
             JSONObject jsonObject = importedJSON.getJSONObject(i);
@@ -97,5 +91,6 @@ public class ImportCSVController implements Initializable {
 
     public void setImportedJSON(JSONArray importedJSON) {
         this.importedJSON = importedJSON;
+        setData();
     }
 }
