@@ -1,13 +1,8 @@
-@font-face {
-    src: url('../../../../res/fonts/Montserrat-Regular.ttf') format('ttf');
-}
-
 .button{
     -fx-background-color: #4E68F1;
     -fx-background-radius: 30;
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 20;
-    -fx-font-family: Montserrat;
+    -fx-font-size: 10;
 }
 
 .scroll-bar:vertical{
@@ -15,14 +10,29 @@
     -fx-border-color :transparent;
     -fx-background-radius : 0.0em;
     -fx-border-radius :2.0em;
-    -fx-padding: 10 10 20 0;
 }
 
 .scroll-bar:vertical .thumb{
-    -fx-background-color :#4E68F1;
+    -fx-background-color :#384FC6;
 
 }
 
 .combo-box{
     -fx-background-radius: 30;
+    -fx-background-color: #ffffff ;
+}
+
+.combo-box-popup .list-view{
+    -fx-background-radius:  30;
+    -fx-background-color:  #4E68F1;
+    -fx-background-insets: 25 0 10 0;
+    -fx-padding: 25;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color:  transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-cell-size: 50;
+
 }

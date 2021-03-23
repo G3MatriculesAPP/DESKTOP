@@ -42,17 +42,17 @@ public class ModulImpl implements IModul {
                 Date date = null;
 
                 if (!rawJSON.isNull("dataIniciModul")){
-                     date = Data.format.parse(rawJSON.getString("dataIniciModul"));
+                     date = new Date(rawJSON.getString("dataIniciModul"));
                     m.setDataIniciModul(date);
                 }
 
                 if (!rawJSON.isNull("dataFiModul")) {
-                    date = Data.format.parse(rawJSON.getString("dataFiModul"));
+                    date = new Date(rawJSON.getString("dataFiModul"));
                     m.setDataFiModul(date);
                 }
 
                 arrayModul.add(m);
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

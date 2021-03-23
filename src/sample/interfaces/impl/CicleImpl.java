@@ -37,11 +37,11 @@ public class CicleImpl implements ICicle {
                 c.setHoresCicle(rawJSON.getInt("hores"));
                 c.setCodiAdaptacioCur(rawJSON.getString("codiAdaptacioCurricular"));
                 if (!rawJSON.isNull("dataInici")){
-                    Date date = Data.format.parse(rawJSON.getString("dataInici"));
+                    Date date = new Date(rawJSON.getString("dataInici"));
                     c.setDataIniciCicle(date);
                 }
                 arrayCicles.add(c);
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

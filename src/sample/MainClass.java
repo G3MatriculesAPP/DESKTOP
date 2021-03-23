@@ -14,7 +14,7 @@ public class MainClass extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
     	
-    	URL url = new File("res/ETLogo.jpg").toURI().toURL();
+    	URL url = new File("res/ETLogo.png").toURI().toURL();
     	Image icon = new Image(String.valueOf(url));
     	primaryStage.getIcons().add(icon);
     	Parent root = FXMLLoader.load(getClass().getResource("windows/login.fxml"));

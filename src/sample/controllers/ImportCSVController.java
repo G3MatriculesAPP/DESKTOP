@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +21,7 @@ import java.util.ResourceBundle;
 public class ImportCSVController implements Initializable {
 
     @FXML   private ListView<JSONObject> listView;
+    @FXML   private Label lblNumCicles;
 
     private JSONArray importedJSON;
     private ArrayList<JSONObject> arrayJSON = new ArrayList<>();
@@ -35,6 +38,8 @@ public class ImportCSVController implements Initializable {
             JSONObject jsonObject = importedJSON.getJSONObject(i);
             observableList.add(jsonObject);
         }
+
+        lblNumCicles.setText("S'han trobat ["+observableList.size()+"] CICLES");
 
         listView.getItems().addAll(observableList);
         listView.setCellFactory(CheckBoxListCell.forListView(s -> {
@@ -59,7 +64,7 @@ public class ImportCSVController implements Initializable {
         // los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
 
         JSONObject requestJSON = new JSONObject();
-        requestJSON.put("data", arrayJSON);
+        requestJSON.put("data", arrayJSON.toString());
 
         ConnAPI connAPI = new ConnAPI("/api/upload/cicles", "POST", true);
         connAPI.setData(requestJSON);

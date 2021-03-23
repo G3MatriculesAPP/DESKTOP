@@ -100,6 +100,7 @@ public class DashboardController implements Initializable {
 			pane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) ->{
 				if (isNowExpanded){
 					List<UnitatFormativa> ufList = ufManager.getAllUFSFromCicleByModul(idCicle, modulsList.indexOf(m));
+					System.out.println(ufList.size());
 					ObservableList<UnitatFormativa> ufMenu = FXCollections.observableArrayList();
 					ufMenu.addAll(ufList);
 					ufListView.getItems().setAll(ufMenu);

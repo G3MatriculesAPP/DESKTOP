@@ -38,13 +38,7 @@ public class Parser {
 			jsonObjectCicle.put("nom", firstCicleRecord.get(1));
 			jsonObjectCicle.put("codiAdaptacioCurricular", firstCicleRecord.get(2));
 			jsonObjectCicle.put("hores", Integer.valueOf(firstCicleRecord.get(3)));
-			JSONObject jsonObjectDate = new JSONObject();
-			jsonObjectDate.put("$date", new Date().toString());
-			try {
-				jsonObjectCicle.put("dataInici", parsearFecha(firstCicleRecord.get(4)));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			jsonObjectCicle.put("dataInici", firstCicleRecord.get(4));
 			jsonObjectCicle.put("dataFi", checkIfBlank(firstCicleRecord.get(5)));
 
 			// Agrupamos por modulos
@@ -57,12 +51,8 @@ public class Parser {
 				jsonObjectModul.put("nomModul", firstModulRecord.get(7));
 				jsonObjectModul.put("duradaMinModul", Integer.valueOf(firstModulRecord.get(8)));
 				jsonObjectModul.put("duradaMaxModul", Integer.valueOf(firstModulRecord.get(9)));
-				try {
-					jsonObjectModul.put("dataIniciModul", parsearFecha(firstModulRecord.get(10)));
-					jsonObjectModul.put("dataFiModul", parsearFecha(firstModulRecord.get(11)));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				jsonObjectModul.put("dataIniciModul", firstModulRecord.get(10));
+				jsonObjectModul.put("dataFiModul", checkIfBlank(firstModulRecord.get(11)));
 				JSONArray jsonArrayUFs = new JSONArray();
 				for (CSVRecord recordsUFs : modulosAgrupados.get(moduleKey)) {
 					JSONObject jsonObjectUF = new JSONObject();
@@ -125,20 +115,6 @@ public class Parser {
 				modulosAgrupados.get(csvRecord.get(6)).add(csvRecord);
 		}
 		return modulosAgrupados;
-	}
-
-	@SuppressWarnings("deprecation")
-	private static JSONObject parsearFecha(String stringDate) throws ParseException {
-		if (stringDate.isBlank())
-			return null;
-		else {
-			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-			Date date = dateFormat.parse(stringDate);
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("$date", date.toGMTString());
-			return jsonObject;
-		}
 	}
 
 	private static String checkIfBlank(String string) {
