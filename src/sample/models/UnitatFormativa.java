@@ -52,6 +52,6 @@ public class UnitatFormativa {
 
     @Override
     public String toString() {
-        return nomUF;
+        return nomUF + " [" + duradaUF + "H]";
     }
 }
