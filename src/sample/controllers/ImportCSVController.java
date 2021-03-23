@@ -34,6 +34,7 @@ public class ImportCSVController implements Initializable {
     /**
      * A través de los datos del CSV se crea por cada CICLE una fila con el nombre del ciclo y con una CHECKBOX por defecto premarcada.
      */
+
     private void setData(){
         ObservableList<JSONObject> observableList = FXCollections.observableArrayList();
         for (int i = 0; i < importedJSON.length(); i++){
@@ -54,17 +55,6 @@ public class ImportCSVController implements Initializable {
             checkBox.setValue(true);
             return checkBox;
         }));
-
-    }
-
-    @FXML
-    void getSelectedItem(MouseEvent event) {
-        selectedIndex = listView.getSelectionModel().getSelectedIndex();
-    }
-
-    private void removeItem() {
-
-        System.out.println(listView.getSelectionModel().getSelectedIndex());
 
     }
 
