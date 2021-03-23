@@ -78,9 +78,11 @@ public class DashboardController implements Initializable {
 		// Obtiene la información ya parseada de la API y la añade al ComboBox
 
 		List<Cicle> ciclesList = cicleManager.getAllCicles();
-		ObservableList<Cicle> ciclesMenu = FXCollections.observableArrayList();
-		ciclesMenu.addAll(ciclesList);
-		cmbCicles.setItems(ciclesMenu);
+		if (ciclesList != null){
+			ObservableList<Cicle> ciclesMenu = FXCollections.observableArrayList();
+			ciclesMenu.addAll(ciclesList);
+			cmbCicles.setItems(ciclesMenu);
+		}
 
 	}
 

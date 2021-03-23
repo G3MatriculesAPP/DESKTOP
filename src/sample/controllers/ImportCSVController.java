@@ -11,6 +11,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.utils.ConnAPI;
@@ -23,6 +24,7 @@ public class ImportCSVController implements Initializable {
     @FXML   private ListView<JSONObject> listView;
     @FXML   private Label lblNumCicles;
 
+    private int selectedIndex;
     private JSONArray importedJSON;
     private ArrayList<JSONObject> arrayJSON = new ArrayList<>();
 
@@ -45,14 +47,24 @@ public class ImportCSVController implements Initializable {
         listView.setCellFactory(CheckBoxListCell.forListView(s -> {
             BooleanProperty checkBox = new SimpleBooleanProperty();
             checkBox.addListener((obs, wasSelected, isNowSelected) -> {
-                if (isNowSelected)
-                    arrayJSON.add(s);
-                else
-                    arrayJSON.remove(s);
+                if (!isNowSelected) {
+                    System.out.println(selectedIndex);
+                }
             });
             checkBox.setValue(true);
             return checkBox;
         }));
+
+    }
+
+    @FXML
+    void getSelectedItem(MouseEvent event) {
+        selectedIndex = listView.getSelectionModel().getSelectedIndex();
+    }
+
+    private void removeItem() {
+
+        System.out.println(listView.getSelectionModel().getSelectedIndex());
 
     }
 
@@ -64,9 +76,9 @@ public class ImportCSVController implements Initializable {
         // los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
 
         JSONObject requestJSON = new JSONObject();
-        requestJSON.put("data", arrayJSON.toString());
+        requestJSON.put("data", importedJSON.toString());
 
-        ConnAPI connAPI = new ConnAPI("/api/upload/cicles", "POST", true);
+        ConnAPI connAPI = new ConnAPI("/api/upload/cicles", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 
@@ -78,6 +90,8 @@ public class ImportCSVController implements Initializable {
 
             case 200:
                 System.out.println("[DEBUG] - Datos introducidos correctamente!");
+                Stage stage = (Stage) listView.getScene().getWindow();
+                stage.close();
                 break;
 
             case 500:
