@@ -35,11 +35,16 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Label layoutX="90.0" layoutY="113.0" text="Matricula't al IETI!">
+            <Label layoutX="79.0" layoutY="76.0" text="Matricula't al IETI!">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
+            <ImageView fitHeight="86.0" fitWidth="96.0" layoutX="152.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/ETLogo.png" />
+               </image>
+            </ImageView>
          </children>
          <effect>
             <DropShadow />
