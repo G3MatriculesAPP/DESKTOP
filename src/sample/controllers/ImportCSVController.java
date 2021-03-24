@@ -1,39 +1,35 @@
 package sample.controllers;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.utils.ConnAPI;
+import sample.utils.Data;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ImportCSVController implements Initializable {
 
-    @FXML   private ListView<JSONObject> listView;
-    @FXML   private Label lblNumCicles;
+    @FXML    private Label lblNumCicles;
+    @FXML    private TableView<JSONObject> tableView;
+    @FXML    private TableColumn<JSONObject, String> tcCode;
+    @FXML    private TableColumn<JSONObject, String> tcName;
 
-    private int selectedIndex;
+    private Stage mainStage;
     private JSONArray importedJSON;
-    private ArrayList<JSONObject> arrayJSON = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {}
-
-    /**
-     * A través de los datos del CSV se crea por cada CICLE una fila con el nombre del ciclo y con una CHECKBOX por defecto premarcada.
-     */
 
     private void setData(){
         ObservableList<JSONObject> observableList = FXCollections.observableArrayList();
@@ -44,18 +40,9 @@ public class ImportCSVController implements Initializable {
 
         lblNumCicles.setText("S'han trobat ["+observableList.size()+"] CICLES");
 
-        listView.getItems().addAll(observableList);
-        listView.setCellFactory(CheckBoxListCell.forListView(s -> {
-            BooleanProperty checkBox = new SimpleBooleanProperty();
-            checkBox.addListener((obs, wasSelected, isNowSelected) -> {
-                if (!isNowSelected) {
-                    System.out.println(selectedIndex);
-                }
-            });
-            checkBox.setValue(true);
-            return checkBox;
-        }));
-
+        tableView.setItems(observableList);
+        tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("codi")));
+        tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
     }
 
     @FXML
@@ -79,19 +66,20 @@ public class ImportCSVController implements Initializable {
                 break;
 
             case 200:
-                System.out.println("[DEBUG] - Datos introducidos correctamente!");
-                Stage stage = (Stage) listView.getScene().getWindow();
-                stage.close();
+                try{
+                    System.out.println("[DEBUG] - Datos introducidos correctamente!");
+                    Stage stage = (Stage) tableView.getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/dashboard.fxml"));
+                    mainStage.getScene().setRoot(loader.load());
+                    stage.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
 
             case 500:
                 System.out.println("[DEBUG] - Error al añadir datos en la DB...");
         }
-    }
-
-    @FXML
-    void selectAll(MouseEvent event) {
-
     }
 
     public JSONArray getImportedJSON() {
@@ -101,5 +89,9 @@ public class ImportCSVController implements Initializable {
     public void setImportedJSON(JSONArray importedJSON) {
         this.importedJSON = importedJSON;
         setData();
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
     }
 }

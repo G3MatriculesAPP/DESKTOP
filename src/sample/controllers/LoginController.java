@@ -1,5 +1,9 @@
 package sample.controllers;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,6 +68,7 @@ public class LoginController implements Initializable {
         connAPI.setData(jsonObject);
         connAPI.establishConn();
 
+
         int status = connAPI.getStatus();
         JSONObject responseJSON = connAPI.getDataJSON();
 
@@ -98,7 +103,5 @@ public class LoginController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 }

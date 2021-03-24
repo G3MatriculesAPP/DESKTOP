@@ -41,6 +41,13 @@ public class Parser {
 			jsonObjectCicle.put("dataInici", firstCicleRecord.get(4));
 			jsonObjectCicle.put("dataFi", checkIfBlank(firstCicleRecord.get(5)));
 
+			try {
+				jsonObjectCicle.put("dataInici", parsearFecha(firstCicleRecord.get(4)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			jsonObjectCicle.put("dataFi", checkIfBlank(firstCicleRecord.get(5)));
+
 			// Agrupamos por modulos
 			Map<String, List<CSVRecord>> modulosAgrupados = getModulosAgrupados(ciclosAgrupados, key);
 			JSONArray jsonArrayModuls = new JSONArray();
@@ -51,8 +58,12 @@ public class Parser {
 				jsonObjectModul.put("nomModul", firstModulRecord.get(7));
 				jsonObjectModul.put("duradaMinModul", Integer.valueOf(firstModulRecord.get(8)));
 				jsonObjectModul.put("duradaMaxModul", Integer.valueOf(firstModulRecord.get(9)));
-				jsonObjectModul.put("dataIniciModul", firstModulRecord.get(10));
-				jsonObjectModul.put("dataFiModul", checkIfBlank(firstModulRecord.get(11)));
+				try {
+					jsonObjectModul.put("dataIniciModul", parsearFecha(firstModulRecord.get(10)));
+					jsonObjectModul.put("dataFiModul", parsearFecha(firstModulRecord.get(11)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				JSONArray jsonArrayUFs = new JSONArray();
 				for (CSVRecord recordsUFs : modulosAgrupados.get(moduleKey)) {
 					JSONObject jsonObjectUF = new JSONObject();
@@ -104,6 +115,7 @@ public class Parser {
 		return ciclosAgrupados;
 	}
 
+
 	private static Map<String, List<CSVRecord>> getModulosAgrupados(Map<String, List<CSVRecord>> ciclosAgrupados, String key) {
 		Map<String, List<CSVRecord>> modulosAgrupados = new HashMap<String, List<CSVRecord>>();
 		for (CSVRecord csvRecord : ciclosAgrupados.get(key)) {
@@ -115,6 +127,20 @@ public class Parser {
 				modulosAgrupados.get(csvRecord.get(6)).add(csvRecord);
 		}
 		return modulosAgrupados;
+	}
+
+	@SuppressWarnings("deprecation")
+	private static JSONObject parsearFecha(String stringDate) throws ParseException {
+		if (stringDate.isBlank())
+			return null;
+		else {
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+			dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			Date date = dateFormat.parse(stringDate);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("date", date.toGMTString());
+			return jsonObject;
+		}
 	}
 
 	private static String checkIfBlank(String string) {

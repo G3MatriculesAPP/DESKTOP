@@ -8,25 +8,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.JSONArray;
-import sample.interfaces.impl.CicleImpl;
-import sample.interfaces.impl.ModulImpl;
-import sample.interfaces.impl.UnitatFormativaImpl;
+import sample.interfaces.impl.*;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
+import sample.utils.Data;
 import sample.utils.Parser;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,14 +32,12 @@ public class DashboardController implements Initializable {
 	@FXML	private Accordion acModul;
 	@FXML   private Button bCSV;
 
-	CicleImpl cicleManager = new CicleImpl();
-	ModulImpl modulManager = new ModulImpl();
-	UnitatFormativaImpl ufManager = new UnitatFormativaImpl();
+	private ObservableList<Cicle> ciclesMenu;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 
-		getAllCicles();
+		getAllCicles();		// Importa todos los CICLES actuales de la DB.
 
 		bCSV.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
@@ -61,6 +55,7 @@ public class DashboardController implements Initializable {
 					Parent root = loader.load();
 					ImportCSVController importCSVController = loader.getController();
 					importCSVController.setImportedJSON(jsonArray);
+					importCSVController.setMainStage((Stage) bCSV.getScene().getWindow());
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
@@ -72,18 +67,17 @@ public class DashboardController implements Initializable {
 		});
 	}
 
-	private void getAllCicles(){
+	public void getAllCicles(){
 
 		// getAllCicles()
 		// Obtiene la información ya parseada de la API y la añade al ComboBox
 
-		List<Cicle> ciclesList = cicleManager.getAllCicles();
+		List<Cicle> ciclesList = Data.cicleManager.getAllCicles();
 		if (ciclesList != null){
-			ObservableList<Cicle> ciclesMenu = FXCollections.observableArrayList();
+			ciclesMenu = FXCollections.observableArrayList();
 			ciclesMenu.addAll(ciclesList);
 			cmbCicles.setItems(ciclesMenu);
 		}
-
 	}
 
 	@FXML
@@ -95,14 +89,13 @@ public class DashboardController implements Initializable {
 		acModul.getPanes().clear();
 
 		String idCicle = cmbCicles.getSelectionModel().getSelectedItem().getIdCicle();
-		List<Modul> modulsList = modulManager.getAllModulsByCicle(idCicle);
+		List<Modul> modulsList = Data.modulManager.getAllModulsByCicle(idCicle);
 		for (Modul m : modulsList) {
 			ListView<UnitatFormativa> ufListView = new ListView<>();
 			TitledPane pane = new TitledPane(m.getNomModul(), ufListView);
 			pane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) ->{
 				if (isNowExpanded){
-					List<UnitatFormativa> ufList = ufManager.getAllUFSFromCicleByModul(idCicle, modulsList.indexOf(m));
-					System.out.println(ufList.size());
+					List<UnitatFormativa> ufList = Data.ufManager.getAllUFSFromCicleByModul(idCicle, modulsList.indexOf(m));
 					ObservableList<UnitatFormativa> ufMenu = FXCollections.observableArrayList();
 					ufMenu.addAll(ufList);
 					ufListView.getItems().setAll(ufMenu);

@@ -6,8 +6,6 @@ import sample.interfaces.IModul;
 import sample.models.Modul;
 import sample.utils.ConnAPI;
 import sample.utils.Data;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,12 +40,14 @@ public class ModulImpl implements IModul {
                 Date date = null;
 
                 if (!rawJSON.isNull("dataIniciModul")){
-                     date = new Date(rawJSON.getString("dataIniciModul"));
+                    JSONObject dateJSON = rawJSON.getJSONObject("dataIniciModul");
+                    date = Data.format.parse(dateJSON.getString("date"));
                     m.setDataIniciModul(date);
                 }
 
                 if (!rawJSON.isNull("dataFiModul")) {
-                    date = new Date(rawJSON.getString("dataFiModul"));
+                    JSONObject dateJSON = rawJSON.getJSONObject("dataFiModul");
+                    date = Data.format.parse(dateJSON.getString("date"));
                     m.setDataFiModul(date);
                 }
 

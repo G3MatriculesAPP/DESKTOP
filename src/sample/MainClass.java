@@ -20,7 +20,6 @@ public class MainClass extends Application {
     	Parent root = FXMLLoader.load(getClass().getResource("windows/login.fxml"));
     	primaryStage.setTitle("MatriculesAPP | DESKTOP");
     	primaryStage.setScene(new Scene(root, 1280, 720));
-
     	primaryStage.show();
 
     }
