@@ -55,7 +55,7 @@ public class ImportCSVController implements Initializable {
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("data", importedJSON.toString());
 
-        ConnAPI connAPI = new ConnAPI("/api/upload/cicles", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/cicles/insert", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 

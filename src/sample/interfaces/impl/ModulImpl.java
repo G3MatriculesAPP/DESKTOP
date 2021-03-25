@@ -23,7 +23,7 @@ public class ModulImpl implements IModul {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", idCicle);
 
-        ConnAPI connAPI = new ConnAPI("/api/moduls", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/moduls/readAll", "POST", false);
         connAPI.setData(jsonObject);
         connAPI.establishConn();
 

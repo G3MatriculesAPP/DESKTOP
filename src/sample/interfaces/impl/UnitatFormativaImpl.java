@@ -24,7 +24,7 @@ public class UnitatFormativaImpl implements IUnitatFormativa {
         requestJSON.put("id", idCicle);
         requestJSON.put("pos", posModul);
 
-        ConnAPI connAPI = new ConnAPI("/api/ufs", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/ufs/readAll", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 

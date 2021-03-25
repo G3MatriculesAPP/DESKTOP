@@ -2,7 +2,6 @@ package sample;
 
 import java.io.File;
 import java.net.URL;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,7 @@ public class MainClass extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
     	
-    	URL url = new File("res/ETLogo.png").toURI().toURL();
+    	URL url = new File("src/sample/windows/img/ETLogo.png").toURI().toURL();
     	Image icon = new Image(String.valueOf(url));
     	primaryStage.getIcons().add(icon);
     	Parent root = FXMLLoader.load(getClass().getResource("windows/login.fxml"));
@@ -24,11 +23,7 @@ public class MainClass extends Application {
 
     }
 
-
     public static void main(String[] args) {
-
-
-    	Fuente: https://www.iteramos.com/pregunta/54713/-icono-de-aplicacion-javafx-2-
-    		launch(args);
+    	launch(args);
     }
 }

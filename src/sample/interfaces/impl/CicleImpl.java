@@ -22,7 +22,7 @@ public class CicleImpl implements ICicle {
 
         ArrayList<Cicle> arrayCicles = new ArrayList<>();
 
-        ConnAPI connAPI = new ConnAPI("/api/cicles", "GET", false);
+        ConnAPI connAPI = new ConnAPI("/api/cicles/readAll", "GET", false);
         connAPI.establishConn();
 
         JSONObject responseJSON = connAPI.getDataJSON();
