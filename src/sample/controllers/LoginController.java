@@ -32,13 +32,15 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-
+    /** 
+     * checkData()
+     * Verifica que los datos introducidos son validos y si lo son, ejecuta checkLogin()
+     * para realizar la llamada a la API.
+     */ 
     @FXML
     void checkData(MouseEvent event) {
 
-        // checkData()
-        // Verifica que los datos introducidos son validos y si lo son, ejecuta checkLogin()
-        // para realizar la llamada a la API.
+       
 
         String email = etEmail.getText();
         String pass = etPassword.getText();
@@ -54,11 +56,14 @@ public class LoginController implements Initializable {
         }
 
     }
-
+    
+    /**
+     *  checkLogin()
+     *  Llama a la API y consulta si el login es correcto o no
+     */
     private void checkLogin(String email, String pass) {
 
-        // checkLogin()
-        // Llama a la API y consulta si el login es correcto o no
+               
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("itEmail", email);
@@ -91,8 +96,11 @@ public class LoginController implements Initializable {
 
     private void gotoLogin() {
 
-        // gotoLogin()
-        // Permite cambiar la SCENE, pasando de Login a Dashboard
+        /**
+         *  gotoLogin()
+         *  Permite cambiar la SCENE, pasando de Login a Dashboard
+         */
+        
 
         try {
             Stage stage = (Stage) btnLogin.getScene().getWindow();

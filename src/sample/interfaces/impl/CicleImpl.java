@@ -11,14 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CicleImpl implements ICicle {
-
+	/**
+	 * getAllCicles()
+         Llama a la API mediante ConnAPI y esta le devuelve un JSON bruto de todos los CICLOS con los datos
+         necesarios para crear los objetos, esta devuelve los datos SIN sus modulos ni UFs. Una vez obtenidos los datos
+         parsea la información y crea un nuevo objeto Cicle por cada objeto en JSON, los añade a un ArrayList y lo devuelve
+	 */
     @Override
     public ArrayList<Cicle> getAllCicles() {
 
-        // getAllCicles()
-        // Llama a la API mediante ConnAPI y esta le devuelve un JSON bruto de todos los CICLOS con los datos
-        // necesarios para crear los objetos, esta devuelve los datos SIN sus modulos ni UFs. Una vez obtenidos los datos
-        // parsea la información y crea un nuevo objeto Cicle por cada objeto en JSON, los añade a un ArrayList y lo devuelve
+         
 
         ArrayList<Cicle> arrayCicles = new ArrayList<>();
 

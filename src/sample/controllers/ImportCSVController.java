@@ -44,14 +44,16 @@ public class ImportCSVController implements Initializable {
         tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("codi")));
         tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
     }
-
+    /**
+     *  importData()
+     *  Recoge los CICLES que quiere el usuario importar a la DB y se los pasa a la API llamandola, una vez pasados
+     *	los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
+     */
     @FXML
     void importData(MouseEvent event) {
 
-        // importData()
-        // Recoge los CICLES que quiere el usuario importar a la DB y se los pasa a la API llamandola, una vez pasados
-        // los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
-
+        
+        
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("data", importedJSON.toString());
 

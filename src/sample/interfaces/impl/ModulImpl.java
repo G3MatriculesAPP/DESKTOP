@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ModulImpl implements IModul {
-
+	/**
+	 * getAllModulsByCicle()
+         Dependiendo de la ObjectID del CICLE, obtendrá todos los MODULOS y toda su información excepto las UFs,
+         la añade a un objeto Modul y lo guarda en un ArrayList para luego devolverlo
+	 */
     @Override
     public ArrayList<Modul> getAllModulsByCicle(String idCicle) {
 
-        // getAllModulsByCicle()
-        // Dependiendo de la ObjectID del CICLE, obtendrá todos los MODULOS y toda su información excepto las UFs,
-        // la añade a un objeto Modul y lo guarda en un ArrayList para luego devolverlo
+         
 
         ArrayList<Modul> arrayModul = new ArrayList<>();
 

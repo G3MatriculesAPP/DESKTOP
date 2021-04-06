@@ -69,8 +69,10 @@ public class DashboardController implements Initializable {
 
 	public void getAllCicles(){
 
-		// getAllCicles()
-		// Obtiene la información ya parseada de la API y la añade al ComboBox
+		/** 
+		 * getAllCicles()
+		 * Obtiene la información ya parseada de la API y la añade al ComboBox
+		*/ 
 
 		List<Cicle> ciclesList = Data.cicleManager.getAllCicles();
 		if (ciclesList != null){
@@ -79,13 +81,15 @@ public class DashboardController implements Initializable {
 			cmbCicles.setItems(ciclesMenu);
 		}
 	}
-
+	/**
+	 *  getModuls()
+	 *	Al pusar en un CICLE se obtienen todos su MODULS y se añaden
+	 */
 	@FXML
 	void getModuls(ActionEvent event) {
 
-		// getModuls()
-		// Al pusar en un CICLE se obtienen todos su MODULS y se añaden
-
+		
+		
 		acModul.getPanes().clear();
 
 		String idCicle = cmbCicles.getSelectionModel().getSelectedItem().getIdCicle();
