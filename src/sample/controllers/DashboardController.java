@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.JSONArray;
-import sample.interfaces.impl.*;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
@@ -22,7 +21,6 @@ import sample.utils.Parser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,7 +28,8 @@ public class DashboardController implements Initializable {
 
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
-	@FXML   private Button bCSV;
+	@FXML   private Button bCSVCicles;
+	@FXML   private Button bCSVAlumnes;
 
 	private ObservableList<Cicle> ciclesMenu;
 
@@ -39,23 +38,22 @@ public class DashboardController implements Initializable {
 
 		getAllCicles();		// Importa todos los CICLES actuales de la DB.
 
-		bCSV.setOnAction(event -> {
+		bCSVCicles.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Importar cicles");
 			fileChooser.getExtensionFilters().addAll(
 					new FileChooser.ExtensionFilter("CSV", "*.csv")
 					);
-
-			File csvFile = fileChooser.showOpenDialog(bCSV.getScene().getWindow());
+			File csvFile = fileChooser.showOpenDialog(bCSVCicles.getScene().getWindow());
 			if (csvFile != null) {
 				try {
 					JSONArray jsonArray = Parser.parseCiclesCSV(csvFile);
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSV.fxml"));
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSVCicles.fxml"));
 					Stage stage = new Stage();
 					Parent root = loader.load();
-					ImportCSVController importCSVController = loader.getController();
+					ImportCSVCiclesController importCSVController = loader.getController();
 					importCSVController.setImportedJSON(jsonArray);
-					importCSVController.setMainStage((Stage) bCSV.getScene().getWindow());
+					importCSVController.setMainStage((Stage)bCSVCicles.getScene().getWindow());
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
@@ -63,7 +61,31 @@ public class DashboardController implements Initializable {
 					e.printStackTrace();
 				}
 			}
+		});
 
+		bCSVAlumnes.setOnAction(event -> {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Importar alumnes admesos");
+			fileChooser.getExtensionFilters().addAll(
+					new FileChooser.ExtensionFilter("CSV", "*.csv")
+					);
+			File csvFile = fileChooser.showOpenDialog(bCSVAlumnes.getScene().getWindow());
+			if (csvFile != null) {
+				try {
+					JSONArray jsonArray = Parser.parseAlumnesCSV(csvFile);
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSVAlumnes.fxml"));
+					Stage stage = new Stage();
+					Parent root = loader.load();
+					ImportCSVAlumnesController importCSVController = loader.getController();
+					importCSVController.setImportedJSON(jsonArray);
+					importCSVController.setMainStage((Stage)bCSVAlumnes.getScene().getWindow());
+					Scene scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		});
 	}
 

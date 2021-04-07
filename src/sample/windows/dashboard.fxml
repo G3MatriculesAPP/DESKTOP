@@ -26,7 +26,7 @@
       <Pane layoutX="147.0" layoutY="118.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;">
          <children>
             <ComboBox fx:id="cmbCicles" layoutX="8.0" layoutY="7.0" onAction="#getModuls" prefHeight="35.0" prefWidth="390.0" promptText="SELECCIONA UN CICLE" />
-            <Button fx:id="bCSV" graphicTextGap="0.0" layoutX="407.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" style="-fx-background-radius: 30;" stylesheets="@css/dashboard.css" text="IMPORTAR">
+            <Button fx:id="bCSVCicles" graphicTextGap="0.0" layoutX="407.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" style="-fx-background-radius: 30;" stylesheets="@css/dashboard.css" text="IMPORTAR">
                <font>
                   <Font name="Arial Bold" size="6.0" />
                </font>
@@ -40,5 +40,10 @@
             </DropShadow>
          </effect>
       </Pane>
+      <Button fx:id="bCSVAlumnes" graphicTextGap="0.0" layoutX="319.0" layoutY="213.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="187.0" style="-fx-background-radius: 30;" stylesheets="@css/dashboard.css" text="IMPORTAR ALUMNES">
+         <font>
+            <Font name="Arial Bold" size="6.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
