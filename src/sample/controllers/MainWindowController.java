@@ -62,5 +62,12 @@ public class MainWindowController implements Initializable {
 
     @FXML
     void gotoPerfilsRequeriments(MouseEvent mouseEvent) {
+        try {
+            transitionEffect();
+            fxmlLoader = new FXMLLoader(getClass().getResource("../windows/perfilsRequisits.fxml"));
+            contentPane.getChildren().add(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
