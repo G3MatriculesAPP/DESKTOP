@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #F2F2F2;" stylesheets="@css/importCSV.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ImportCSVController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #F2F2F2;" stylesheets="@css/importCSV.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ImportCSVAlumnesController">
    <children>
       <Button fx:id="btnImport" layoutX="532.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#importData" prefHeight="50.0" prefWidth="174.0" text="IMPORTAR!" />
       <Label fx:id="lblNumCicles" layoutX="40.0" layoutY="35.0" text="#NUMCICLES">
@@ -17,8 +17,8 @@
       </Label>
       <TableView fx:id="tableView" layoutX="40.0" layoutY="88.0" prefHeight="353.0" prefWidth="481.0">
          <columns>
-            <TableColumn fx:id="tcCode" editable="false" minWidth="3.0" prefWidth="78.0" sortType="DESCENDING" text="CODI" />
-            <TableColumn fx:id="tcName" editable="false" prefWidth="402.0" sortType="DESCENDING" text="NOM CICLE" />
+            <TableColumn fx:id="tcCode" editable="false" minWidth="3.0" prefWidth="78.0" sortType="DESCENDING" text="idRALC" />
+            <TableColumn fx:id="tcName" editable="false" prefWidth="402.0" sortType="DESCENDING" text="Nom" />
          </columns>
       </TableView>
    </children>
