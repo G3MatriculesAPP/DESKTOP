@@ -36,3 +36,22 @@
     -fx-cell-size: 50;
 
 }
+
+.list-view{
+    -fx-padding: 5px ;
+}
+
+.list-view .list-cell {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14;
+    -fx-background-radius: 30px;
+    -fx-padding: 10px;
+    -fx-background-color: #4E68F1;
+    -fx-background-insets: 3px, 5px ;
+}
+
+.list-view .list-cell:empty {
+    -fx-padding: 4px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 1px;
+}

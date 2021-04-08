@@ -4,6 +4,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.json.JSONObject;
@@ -31,16 +34,23 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        etPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER))
+                    checkData(null);
+            }
+        });
+
     }
+
     /** 
      * checkData()
      * Verifica que los datos introducidos son validos y si lo son, ejecuta checkLogin()
      * para realizar la llamada a la API.
-     */ 
+     */
     @FXML
     void checkData(MouseEvent event) {
-
-       
 
         String email = etEmail.getText();
         String pass = etPassword.getText();
@@ -94,13 +104,11 @@ public class LoginController implements Initializable {
         connAPI.closeConn();
     }
 
+    /**
+     *  gotoLogin()
+     *  Permite cambiar la SCENE, pasando de Login a Dashboard
+     */
     private void gotoLogin() {
-
-        /**
-         *  gotoLogin()
-         *  Permite cambiar la SCENE, pasando de Login a Dashboard
-         */
-        
 
         try {
             Stage stage = (Stage) btnLogin.getScene().getWindow();

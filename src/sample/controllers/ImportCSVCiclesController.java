@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.utils.ConnAPI;
+import sample.utils.Data;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,18 +31,23 @@ public class ImportCSVCiclesController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {}
 
     private void setData(){
-        ObservableList<JSONObject> observableList = FXCollections.observableArrayList();
-        for (int i = 0; i < importedJSON.length(); i++){
-            JSONObject jsonObject = importedJSON.getJSONObject(i);
-            observableList.add(jsonObject);
+        try{
+            ObservableList<JSONObject> observableList = FXCollections.observableArrayList();
+            for (int i = 0; i < importedJSON.length(); i++){
+                JSONObject jsonObject = importedJSON.getJSONObject(i);
+                observableList.add(jsonObject);
+            }
+
+            lblNumCicles.setText("S'han trobat ["+observableList.size()+"] CICLES");
+
+            tableView.setItems(observableList);
+            tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("codi")));
+            tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        lblNumCicles.setText("S'han trobat ["+observableList.size()+"] CICLES");
-
-        tableView.setItems(observableList);
-        tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("codi")));
-        tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
     }
+
     /**
      *  importData()
      *  Recoge los CICLES que quiere el usuario importar a la DB y se los pasa a la API llamandola, una vez pasados
@@ -67,10 +74,13 @@ public class ImportCSVCiclesController implements Initializable {
             case 200:
                 try{
                     System.out.println("[DEBUG] - Datos introducidos correctamente!");
+                    Data.ciclesList = Data.cicleManager.getAllCicles();
                     Stage stage = (Stage) tableView.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/dashboard.fxml"));
-                    mainStage.getScene().setRoot(loader.load());
                     stage.close();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("MatriculesAPP | DESKTOP");
+                    alert.setHeaderText("Cicles afegits correctament!");
+                    alert.showAndWait();
                 }catch (Exception e){
                     e.printStackTrace();
                 }

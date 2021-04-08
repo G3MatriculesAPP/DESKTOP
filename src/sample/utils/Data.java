@@ -1,11 +1,13 @@
 package sample.utils;
 
+import sample.interfaces.impl.AlumneImpl;
 import sample.interfaces.impl.CicleImpl;
 import sample.interfaces.impl.ModulImpl;
 import sample.interfaces.impl.UnitatFormativaImpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -20,6 +22,9 @@ public class Data {
     public static CicleImpl cicleManager = new CicleImpl();
     public static ModulImpl modulManager = new ModulImpl();
     public static UnitatFormativaImpl ufManager = new UnitatFormativaImpl();
+    public static AlumneImpl alumneManager = new AlumneImpl();
+
+    public static List ciclesList;
 
 
 }

@@ -68,9 +68,11 @@ public class ImportCSVAlumnesController implements Initializable {
                 try{
                     System.out.println("[DEBUG] - Datos introducidos correctamente!");
                     Stage stage = (Stage) tableView.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/dashboard.fxml"));
-                    mainStage.getScene().setRoot(loader.load());
                     stage.close();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("MatriculesAPP | DESKTOP");
+                    alert.setHeaderText("Alumnes afegits correctament!");
+                    alert.showAndWait();
                 }catch (Exception e){
                     e.printStackTrace();
                 }

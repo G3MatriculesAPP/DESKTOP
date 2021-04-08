@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="720.0" prefWidth="1130.0" style="-fx-background-color: FFFFFF;" stylesheets="@css/dashboard.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.AlumnesController">
+<AnchorPane prefHeight="720.0" prefWidth="1130.0" style="-fx-background-color: FFFFFF;" stylesheets="@css/dashboard.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.AlumnesController">
    <children>
-      <Pane layoutX="25.0" layoutY="25.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;">
+      <Pane layoutX="25.0" layoutY="100.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;">
          <children>
-            <ComboBox fx:id="cmbCicles" layoutX="8.0" layoutY="7.0" prefHeight="35.0" prefWidth="390.0" promptText="SELECCIONA UN CICLE" />
-            <Button fx:id="bCSV" graphicTextGap="0.0" layoutX="407.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" style="-fx-background-radius: 30;" stylesheets="@css/dashboard.css" text="IMPORTAR">
+            <ComboBox fx:id="cmbCicles" layoutX="8.0" layoutY="7.0" onAction="#getAlumnesByCicle" prefHeight="35.0" prefWidth="390.0" promptText="SELECCIONA UN CICLE" />
+            <Button fx:id="bCSVAlumnes" graphicTextGap="0.0" layoutX="407.0" layoutY="8.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" style="-fx-background-radius: 30;" stylesheets="@css/dashboard.css" text="IMPORTAR">
                <font>
                   <Font name="Arial Bold" size="6.0" />
                </font>
@@ -30,11 +30,12 @@
             </DropShadow>
          </effect>
       </Pane>
-      <ScrollPane layoutX="25.0" layoutY="100.0" prefHeight="600.0" prefWidth="500.0">
-         <content>
-            <ListView fx:id="listAlumnes" prefHeight="600.0" prefWidth="500.0" />
-         </content>
-      </ScrollPane>
-      <ScrollPane layoutX="540.0" layoutY="25.0" prefHeight="676.0" prefWidth="571.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;" />
+      <ScrollPane layoutX="565.0" layoutY="25.0" prefHeight="670.0" prefWidth="540.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;" />
+      <Text layoutX="25.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ALUMNES:" wrappingWidth="250.0">
+         <font>
+            <Font name="Arial Bold" size="40.0" />
+         </font>
+      </Text>
+      <ListView fx:id="listAlumnes" layoutX="25.0" layoutY="165.0" prefHeight="530.0" prefWidth="500.0" style="-fx-background-color: transparent;" />
    </children>
 </AnchorPane>

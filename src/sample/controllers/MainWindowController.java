@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import sample.utils.Data;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +21,7 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Data.ciclesList = Data.cicleManager.getAllCicles();
         gotoCourses(null);
     }
 
@@ -58,7 +60,7 @@ public class MainWindowController implements Initializable {
     }
 
 
-
-
-
+    @FXML
+    void gotoPerfilsRequeriments(MouseEvent mouseEvent) {
+    }
 }

@@ -29,7 +29,6 @@ public class DashboardController implements Initializable {
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
 	@FXML   private Button bCSVCicles;
-	@FXML   private Button bCSVAlumnes;
 
 	private ObservableList<Cicle> ciclesMenu;
 
@@ -57,52 +56,31 @@ public class DashboardController implements Initializable {
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("MatriculesAPP | DESKTOP");
+					alert.setHeaderText("Fichero .CSV no válido....");
+					alert.showAndWait();
 				}
 			}
 		});
 
-		bCSVAlumnes.setOnAction(event -> {
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Importar alumnes admesos");
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("CSV", "*.csv")
-					);
-			File csvFile = fileChooser.showOpenDialog(bCSVAlumnes.getScene().getWindow());
-			if (csvFile != null) {
-				try {
-					JSONArray jsonArray = Parser.parseAlumnesCSV(csvFile);
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSVAlumnes.fxml"));
-					Stage stage = new Stage();
-					Parent root = loader.load();
-					ImportCSVAlumnesController importCSVController = loader.getController();
-					importCSVController.setImportedJSON(jsonArray);
-					importCSVController.setMainStage((Stage)bCSVAlumnes.getScene().getWindow());
-					Scene scene = new Scene(root);
-					stage.setScene(scene);
-					stage.show();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+
 	}
 
+	/**
+	 * getAllCicles()
+	 * Obtiene la información ya parseada de la API y la añade al ComboBox
+	 */
 	public void getAllCicles(){
 
-		/** 
-		 * getAllCicles()
-		 * Obtiene la información ya parseada de la API y la añade al ComboBox
-		*/ 
-
-		List<Cicle> ciclesList = Data.cicleManager.getAllCicles();
-		if (ciclesList != null){
+		if (Data.ciclesList != null){
 			ciclesMenu = FXCollections.observableArrayList();
-			ciclesMenu.addAll(ciclesList);
+			ciclesMenu.addAll(Data.ciclesList);
 			cmbCicles.setItems(ciclesMenu);
 		}
 	}
+
 	/**
 	 *  getModuls()
 	 *	Al pusar en un CICLE se obtienen todos su MODULS y se añaden
@@ -110,8 +88,6 @@ public class DashboardController implements Initializable {
 	@FXML
 	void getModuls(ActionEvent event) {
 
-		
-		
 		acModul.getPanes().clear();
 
 		String idCicle = cmbCicles.getSelectionModel().getSelectedItem().getIdCicle();
