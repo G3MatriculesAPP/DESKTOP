@@ -1,9 +1,6 @@
 package sample.utils;
 
-import sample.interfaces.impl.AlumneImpl;
-import sample.interfaces.impl.CicleImpl;
-import sample.interfaces.impl.ModulImpl;
-import sample.interfaces.impl.UnitatFormativaImpl;
+import sample.interfaces.impl.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,8 +20,11 @@ public class Data {
     public static ModulImpl modulManager = new ModulImpl();
     public static UnitatFormativaImpl ufManager = new UnitatFormativaImpl();
     public static AlumneImpl alumneManager = new AlumneImpl();
+    public static PerfilRequerimentImpl reqPerfilsManager = new PerfilRequerimentImpl();
 
     public static List ciclesList;
+    public static List perfilsList;
+    public static String[] optionsReqs = new String[]{"IMAGE", "DOCUMENT"};
 
 
 }

@@ -22,6 +22,7 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Data.ciclesList = Data.cicleManager.getAllCicles();
+        Data.perfilsList = Data.reqPerfilsManager.getAllPerfils();
         gotoCourses(null);
     }
 

@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -98,6 +99,10 @@ public class LoginController implements Initializable {
                 break;
             case 500:
                 System.out.println("[DEBUG] - Datos introducidos incorrectos...");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("MatriculesAPP | DESKTOP");
+                alert.setHeaderText("Login incorrecto....");
+                alert.showAndWait();
                 break;
         }
 
@@ -116,7 +121,7 @@ public class LoginController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

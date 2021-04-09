@@ -7,13 +7,16 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.models.PerfilRequeriment;
+import sample.utils.Data;
 
 import java.net.URL;
 import java.util.Optional;
@@ -22,17 +25,22 @@ import java.util.ResourceBundle;
 public class PerfilsRequisitsController implements Initializable {
 
     @FXML    private Button btnAdd, btnDelete, btnAddReq, btnDeleteReq, btnModify, btnConfirm;
-    @FXML    private TableView tableReq;
     @FXML    private ListView<PerfilRequeriment> listProfiles;
-    @FXML    private Pane paneOptions;
-    @FXML    private TableColumn<JSONObject, String> nameColumn;
-    @FXML    private TableColumn<JSONObject, String> extensionColumn;
+    @FXML    private VBox paneReqs;
+    @FXML    private ScrollPane scrollPane;
+    @FXML    private Label tagProfileName;
+    @FXML    private Pane paneTag;
+
+    private String nomPerfil, descriptionPerfil;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        getPerfils();
+    }
 
-        initTable();
-
+    private void getPerfils() {
+        listProfiles.getItems().clear();
+        listProfiles.getItems().addAll(Data.perfilsList);
     }
 
     @FXML
@@ -78,29 +86,56 @@ public class PerfilsRequisitsController implements Initializable {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(nomDesc -> {
-            paneOptions.setVisible(true);
-            tableReq.setVisible(true);
+            clearData();
+            scrollPane.setVisible(true);
+            btnAddReq.setVisible(true);
             btnConfirm.setVisible(true);
+            paneTag.setVisible(true);
+            nomPerfil = nomDesc.getKey();
+            descriptionPerfil = nomDesc.getValue();
+            tagProfileName.setText(nomPerfil.toUpperCase());
+            addReq(event);
             System.out.println("Nom=" + nomDesc.getKey() + ", Descripcio=" + nomDesc.getValue());
         });
 
     }
 
     @FXML
-    void addReq(ActionEvent event) {
-        addRow();
-        addRow();
-        addRow();
+    void getReqs(MouseEvent event) {
 
+        PerfilRequeriment perfilRequeriment = listProfiles.getSelectionModel().getSelectedItem();
+        perfilRequeriment = Data.reqPerfilsManager.getPerfilRequeriments(perfilRequeriment);
+
+        clearData();
+        scrollPane.setVisible(true);
+        btnAddReq.setVisible(true);
+        btnConfirm.setVisible(true);
+        paneTag.setVisible(true);
+        nomPerfil = perfilRequeriment.getNomPerfil();
+        descriptionPerfil = perfilRequeriment.getDescrPerfil();
+        tagProfileName.setText(nomPerfil.toUpperCase());
+
+        for (int i = 0; i < perfilRequeriment.getRequisits().length(); i++){
+            JSONObject rawJSON = perfilRequeriment.getRequisits().getJSONObject(i);
+            addNewRow(rawJSON.getString("nomReq"), rawJSON.getInt("tipusReq"));
+        }
+
+
+    }
+
+    /**
+     * Añade 3 nuevos TextField en blanco
+     * @param event
+     */
+    @FXML
+    void addReq(ActionEvent event) {
+        addNewRow();
+        addNewRow();
+        addNewRow();
     }
 
     @FXML
     void deletePerfil(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteReq(ActionEvent event) {
 
     }
 
@@ -111,33 +146,80 @@ public class PerfilsRequisitsController implements Initializable {
 
     @FXML
     void checkData(ActionEvent event) {
+        int rowCount = paneReqs.getChildren().size();
+        System.out.println(rowCount);
+
+        JSONObject dataPerfil = new JSONObject();
+        dataPerfil.put("nom", nomPerfil);
+        dataPerfil.put("descripcio", descriptionPerfil);
+        JSONArray arrayJSON = new JSONArray();
+
+        for (int i = 0; i < rowCount; i++){
+            HBox row = (HBox) paneReqs.getChildren().get(i);
+            TextField tfRow = (TextField) row.getChildren().get(0);
+            if (!tfRow.getText().isEmpty()) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("nomReq", tfRow.getText());
+                ChoiceBox cbRow = (ChoiceBox) row.getChildren().get(1);
+                jsonObject.put("tipusReq", cbRow.getSelectionModel().getSelectedIndex());
+                arrayJSON.put(jsonObject);
+            }
+        }
+
+        if (arrayJSON.length() > 0){
+            dataPerfil.put("requeriments", arrayJSON);
+            System.out.println("es valido para subir a la db");
+            Data.reqPerfilsManager.createPerfil(dataPerfil);
+        }
 
     }
 
+    /**
+     * Crea un nuevo TextField y lo añade al panel.
+     */
+    private void addNewRow() {
 
-    private void initTable(){
+        HBox hBox = new HBox();
+        hBox.setPrefSize(200, 35);
+        hBox.setSpacing(15);
 
-        initCols();
-    }
-    private void initCols(){
+        TextField nameReq = new TextField();
+        nameReq.setPrefSize(350, 35);
+        hBox.getChildren().add(nameReq);
 
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("NOM"));
-        extensionColumn.setCellValueFactory(new PropertyValueFactory<>("EXTENSIÓ"));
+        ChoiceBox<String> extensionReq = new ChoiceBox();
+        extensionReq.setPrefSize(100, 35);
+        extensionReq.getItems().setAll(Data.optionsReqs);
+        extensionReq.getSelectionModel().select(0);
+        hBox.getChildren().add(extensionReq);
 
-    }
-
-    private void addRow(){
-        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        nameColumn.setOnEditCommit(e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).put("nom", e.getNewValue());
-        });
-
-        extensionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        extensionColumn.setOnEditCommit(e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).put("nom", e.getNewValue());
-        });
+        paneReqs.getChildren().add(hBox);
     }
 
+    private void addNewRow(String reqName, int reqExtension) {
 
+        HBox hBox = new HBox();
+        hBox.setPrefSize(200, 35);
+        hBox.setSpacing(15);
+
+        TextField nameReq = new TextField();
+        nameReq.setPrefSize(350, 35);
+        nameReq.setText(reqName);
+        hBox.getChildren().add(nameReq);
+
+        ChoiceBox<String> extensionReq = new ChoiceBox();
+        extensionReq.setPrefSize(100, 35);
+        extensionReq.getItems().setAll(Data.optionsReqs);
+        extensionReq.getSelectionModel().select(reqExtension);
+        hBox.getChildren().add(extensionReq);
+
+        paneReqs.getChildren().add(hBox);
+    }
+
+    private void clearData(){
+
+        paneReqs.getChildren().clear();
+
+    }
 
 }

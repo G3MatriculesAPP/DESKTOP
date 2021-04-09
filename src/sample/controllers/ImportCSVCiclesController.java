@@ -56,12 +56,10 @@ public class ImportCSVCiclesController implements Initializable {
     @FXML
     void importData(MouseEvent event) {
 
-        
-        
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("data", importedJSON.toString());
 
-        ConnAPI connAPI = new ConnAPI("/api/cicles/insert", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/cicles/insertMany", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 
@@ -88,6 +86,7 @@ public class ImportCSVCiclesController implements Initializable {
 
             case 500:
                 System.out.println("[DEBUG] - Error al añadir datos en la DB...");
+                break;
         }
     }
 

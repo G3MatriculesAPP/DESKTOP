@@ -1,5 +1,6 @@
 package sample.models;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PerfilRequeriment {
@@ -7,11 +8,11 @@ public class PerfilRequeriment {
     private String idPerfil;
     private String nomPerfil;
     private String descrPerfil;
-    private JSONObject requisits;
+    private JSONArray requisits;
 
     public PerfilRequeriment(){}
 
-    public PerfilRequeriment(String idPerfil, String nomPerfil, String descrPerfil, JSONObject requisits) {
+    public PerfilRequeriment(String idPerfil, String nomPerfil, String descrPerfil, JSONArray requisits) {
         this.idPerfil = idPerfil;
         this.nomPerfil = nomPerfil;
         this.descrPerfil = descrPerfil;
@@ -42,11 +43,11 @@ public class PerfilRequeriment {
         this.descrPerfil = descrPerfil;
     }
 
-    public JSONObject getRequisits() {
+    public JSONArray getRequisits() {
         return requisits;
     }
 
-    public void setRequisits(JSONObject requisits) {
+    public void setRequisits(JSONArray requisits) {
         this.requisits = requisits;
     }
 
