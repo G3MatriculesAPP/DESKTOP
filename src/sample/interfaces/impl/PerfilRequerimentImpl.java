@@ -1,10 +1,12 @@
 package sample.interfaces.impl;
 
+import javafx.scene.control.Alert;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.interfaces.IPerfilRequeriment;
 import sample.models.PerfilRequeriment;
 import sample.utils.ConnAPI;
+import sample.utils.Data;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,27 @@ public class PerfilRequerimentImpl implements IPerfilRequeriment {
     @Override
     public boolean createPerfil(JSONObject dataJSON) {
 
+        JSONObject requestJSON = new JSONObject();
+        requestJSON.put("data", dataJSON.toString());
+        
+        ConnAPI connAPI = new ConnAPI("/api/reqPerfils/insertOne", "POST", false);
+        connAPI.setData(requestJSON);
+        connAPI.establishConn();
 
+        int status = connAPI.getStatus();
+        switch (status){
+            case 0:
+                System.out.println("[DEBUG] - Imposible obtener STATUS...");
+                return false;
+
+            case 200:
+                System.out.println("[DEBUG] - Perfil añadido correctamente!");
+                return true;
+
+            case 500:
+                System.out.println("[DEBUG] - Error al añadir el perfil...");
+                return false;
+        }
 
         return false;
     }

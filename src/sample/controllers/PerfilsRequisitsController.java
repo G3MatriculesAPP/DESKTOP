@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class PerfilsRequisitsController implements Initializable {
 
-    @FXML    private Button btnAdd, btnDelete, btnAddReq, btnDeleteReq, btnModify, btnConfirm;
+    @FXML    private Button btnAdd, btnDelete, btnAddReq, btnDeleteReq, btnConfirm;
     @FXML    private ListView<PerfilRequeriment> listProfiles;
     @FXML    private VBox paneReqs;
     @FXML    private ScrollPane scrollPane;
@@ -95,14 +95,12 @@ public class PerfilsRequisitsController implements Initializable {
             descriptionPerfil = nomDesc.getValue();
             tagProfileName.setText(nomPerfil.toUpperCase());
             addReq(event);
-            System.out.println("Nom=" + nomDesc.getKey() + ", Descripcio=" + nomDesc.getValue());
         });
 
     }
 
     @FXML
     void getReqs(MouseEvent event) {
-
         PerfilRequeriment perfilRequeriment = listProfiles.getSelectionModel().getSelectedItem();
         perfilRequeriment = Data.reqPerfilsManager.getPerfilRequeriments(perfilRequeriment);
 
@@ -119,8 +117,6 @@ public class PerfilsRequisitsController implements Initializable {
             JSONObject rawJSON = perfilRequeriment.getRequisits().getJSONObject(i);
             addNewRow(rawJSON.getString("nomReq"), rawJSON.getInt("tipusReq"));
         }
-
-
     }
 
     /**
@@ -140,20 +136,12 @@ public class PerfilsRequisitsController implements Initializable {
     }
 
     @FXML
-    void modifyPerfil(ActionEvent event) {
-
-    }
-
-    @FXML
     void checkData(ActionEvent event) {
         int rowCount = paneReqs.getChildren().size();
-        System.out.println(rowCount);
-
         JSONObject dataPerfil = new JSONObject();
         dataPerfil.put("nom", nomPerfil);
         dataPerfil.put("descripcio", descriptionPerfil);
         JSONArray arrayJSON = new JSONArray();
-
         for (int i = 0; i < rowCount; i++){
             HBox row = (HBox) paneReqs.getChildren().get(i);
             TextField tfRow = (TextField) row.getChildren().get(0);
@@ -161,17 +149,25 @@ public class PerfilsRequisitsController implements Initializable {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("nomReq", tfRow.getText());
                 ChoiceBox cbRow = (ChoiceBox) row.getChildren().get(1);
-                jsonObject.put("tipusReq", cbRow.getSelectionModel().getSelectedIndex());
-                arrayJSON.put(jsonObject);
+                if (cbRow.getSelectionModel().getSelectedItem() != null){
+                    jsonObject.put("tipusReq", cbRow.getSelectionModel().getSelectedIndex());
+                    arrayJSON.put(jsonObject);
+                }
             }
         }
 
         if (arrayJSON.length() > 0){
             dataPerfil.put("requeriments", arrayJSON);
-            System.out.println("es valido para subir a la db");
-            Data.reqPerfilsManager.createPerfil(dataPerfil);
+            boolean result = Data.reqPerfilsManager.createPerfil(dataPerfil);
+            if (result){
+                Data.perfilsList = Data.reqPerfilsManager.getAllPerfils();
+                getPerfils();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("MatriculesAPP | DESKTOP");
+                alert.setHeaderText("Perfil añadido correctamente!");
+                alert.showAndWait();
+            }
         }
-
     }
 
     /**
@@ -190,7 +186,6 @@ public class PerfilsRequisitsController implements Initializable {
         ChoiceBox<String> extensionReq = new ChoiceBox();
         extensionReq.setPrefSize(100, 35);
         extensionReq.getItems().setAll(Data.optionsReqs);
-        extensionReq.getSelectionModel().select(0);
         hBox.getChildren().add(extensionReq);
 
         paneReqs.getChildren().add(hBox);

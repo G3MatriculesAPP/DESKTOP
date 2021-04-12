@@ -24,7 +24,7 @@ public class Data {
 
     public static List ciclesList;
     public static List perfilsList;
-    public static String[] optionsReqs = new String[]{"IMAGE", "DOCUMENT"};
+    public static String[] optionsReqs = new String[]{"IMAGE", "DOCUMENT", "TEXT"};
 
 
 }
