@@ -6,26 +6,26 @@ import sample.interfaces.IModul;
 import sample.models.Modul;
 import sample.utils.ConnAPI;
 import sample.utils.Data;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ModulImpl implements IModul {
-
+	/**
+	 * getAllModulsByCicle()
+         Dependiendo de la ObjectID del CICLE, obtendrá todos los MODULOS y toda su información excepto las UFs,
+         la añade a un objeto Modul y lo guarda en un ArrayList para luego devolverlo
+	 */
     @Override
     public ArrayList<Modul> getAllModulsByCicle(String idCicle) {
 
-        // getAllModulsByCicle()
-        // Dependiendo de la ObjectID del CICLE, obtendrá todos los MODULOS y toda su información excepto las UFs,
-        // la añade a un objeto Modul y lo guarda en un ArrayList para luego devolverlo
+         
 
         ArrayList<Modul> arrayModul = new ArrayList<>();
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", idCicle);
 
-        ConnAPI connAPI = new ConnAPI("/api/moduls", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/moduls/readAll", "POST", false);
         connAPI.setData(jsonObject);
         connAPI.establishConn();
 
@@ -42,12 +42,14 @@ public class ModulImpl implements IModul {
                 Date date = null;
 
                 if (!rawJSON.isNull("dataIniciModul")){
-                     date = new Date(rawJSON.getString("dataIniciModul"));
+                    JSONObject dateJSON = rawJSON.getJSONObject("dataIniciModul");
+                    date = Data.format.parse(dateJSON.getString("date"));
                     m.setDataIniciModul(date);
                 }
 
                 if (!rawJSON.isNull("dataFiModul")) {
-                    date = new Date(rawJSON.getString("dataFiModul"));
+                    JSONObject dateJSON = rawJSON.getJSONObject("dataFiModul");
+                    date = Data.format.parse(dateJSON.getString("date"));
                     m.setDataFiModul(date);
                 }
 

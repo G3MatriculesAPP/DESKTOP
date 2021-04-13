@@ -6,20 +6,22 @@ import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TestAPI {
 
     // TestAPI{}
     // Clase especial para testear sin arrancar la aplicación completamente
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
-        UnitatFormativaImpl unitatFormativaManager = new UnitatFormativaImpl();
-        List<UnitatFormativa> ufList = unitatFormativaManager.getAllUFSFromCicleByModul("604f8b8228db691addd7490f", 8);
-        for (UnitatFormativa uf : ufList) {
-            System.out.println(uf.getNomUF());
-        }
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy kk:mm:ss zzz",Locale.US);
+        Date response = formatter.parse("8 Apr 2013 00:00:00 GMT");
+        System.out.println(response);
 
     }
 
