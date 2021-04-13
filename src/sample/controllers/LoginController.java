@@ -4,14 +4,18 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.json.JSONObject;
@@ -31,14 +35,23 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        etPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER))
+                    checkData(null);
+            }
+        });
+
     }
 
+    /** 
+     * checkData()
+     * Verifica que los datos introducidos son validos y si lo son, ejecuta checkLogin()
+     * para realizar la llamada a la API.
+     */
     @FXML
     void checkData(MouseEvent event) {
-
-        // checkData()
-        // Verifica que los datos introducidos son validos y si lo son, ejecuta checkLogin()
-        // para realizar la llamada a la API.
 
         String email = etEmail.getText();
         String pass = etPassword.getText();
@@ -54,11 +67,14 @@ public class LoginController implements Initializable {
         }
 
     }
-
+    
+    /**
+     *  checkLogin()
+     *  Llama a la API y consulta si el login es correcto o no
+     */
     private void checkLogin(String email, String pass) {
 
-        // checkLogin()
-        // Llama a la API y consulta si el login es correcto o no
+               
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("itEmail", email);
@@ -83,24 +99,29 @@ public class LoginController implements Initializable {
                 break;
             case 500:
                 System.out.println("[DEBUG] - Datos introducidos incorrectos...");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("MatriculesAPP | DESKTOP");
+                alert.setHeaderText("Login incorrecto....");
+                alert.showAndWait();
                 break;
         }
 
         connAPI.closeConn();
     }
 
+    /**
+     *  gotoLogin()
+     *  Permite cambiar la SCENE, pasando de Login a Dashboard
+     */
     private void gotoLogin() {
-
-        // gotoLogin()
-        // Permite cambiar la SCENE, pasando de Login a Dashboard
 
         try {
             Stage stage = (Stage) btnLogin.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("../windows/dashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../windows/mainWindow.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

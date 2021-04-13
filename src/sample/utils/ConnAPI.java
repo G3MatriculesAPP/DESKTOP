@@ -13,13 +13,19 @@ import java.util.Scanner;
 public class ConnAPI {
 
     private static HttpURLConnection conn;
-
+    
+    /**
+     *  ConnAPI()
+         Crea una nueva conexion con la API, recibe la ruta al endpoint y el metodo con el
+         que se hara la llamada (GET, POST, ETC...). Dependiendo del valor de "isTest" conectará con
+         HEROKU o con LOCALHOST
+     * @param endpoint
+     * @param method
+     * @param isTest
+     */
     public ConnAPI(String endpoint, String method, boolean isTest){
 
-        // ConnAPI()
-        // Crea una nueva conexion con la API, recibe la ruta al endpoint y el metodo con el
-        // que se hara la llamada (GET, POST, ETC...). Dependiendo del valor de "isTest" conectará con
-        // HEROKU o con LOCALHOST
+        
 
         try{
             URL url = null;
@@ -39,13 +45,15 @@ public class ConnAPI {
     }
 
 
+    /**
+     *  establishConn()
+         Para conectar con la API, debe ponerse siempre al final a la hora de ejecutar la conexion
+         en alguna parte del programa.
 
+     */
     public void establishConn(){
 
-        // establishConn()
-        // Para conectar con la API, debe ponerse siempre al final a la hora de ejecutar la conexion
-        // en alguna parte del programa.
-
+        
         try {
             conn.connect();
         } catch (IOException e) {
@@ -53,11 +61,15 @@ public class ConnAPI {
         }
     }
 
+    /**
+     * setData()
+         Método para pasar la información a la API, este recibe un JSONObject ya hecho y se encarga de enviarselo
+         a la API para que pueda leerlo.
+     * @param jsonObject
+     */
     public void setData(JSONObject jsonObject){
 
-        // setData()
-        // Método para pasar la información a la API, este recibe un JSONObject ya hecho y se encarga de enviarselo
-        // a la API para que pueda leerlo.
+         
 
         conn.setRequestProperty("Content-Type","application/json");
         conn.setDoOutput(true);
@@ -75,10 +87,14 @@ public class ConnAPI {
         }
     }
 
+    /**
+     * getDataJSON()
+         Obtiene la informacion obtenida por la API en formato JSON
+     * @return
+     */
     public JSONObject getDataJSON(){
 
-        // getDataJSON()
-        // Obtiene la informacion obtenida por la API en formato JSON
+         
 
         String rawData = "";
 
@@ -99,10 +115,14 @@ public class ConnAPI {
 
     }
 
+    /**
+     * getStatus()
+         Devuevle el STATUS de la conexion con la API
+     * @return
+     */
     public int getStatus(){
 
-        // getStatus()
-        // Devuevle el STATUS de la conexion con la API
+         
 
         try {
             return conn.getResponseCode();

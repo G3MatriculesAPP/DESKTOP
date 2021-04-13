@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.JSONArray;
-import sample.interfaces.impl.*;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
@@ -22,7 +21,6 @@ import sample.utils.Parser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,7 +28,7 @@ public class DashboardController implements Initializable {
 
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
-	@FXML   private Button bCSV;
+	@FXML   private Button bCSVCicles;
 
 	private ObservableList<Cicle> ciclesMenu;
 
@@ -39,52 +37,56 @@ public class DashboardController implements Initializable {
 
 		getAllCicles();		// Importa todos los CICLES actuales de la DB.
 
-		bCSV.setOnAction(event -> {
+		bCSVCicles.setOnAction(event -> {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Importar cicles");
 			fileChooser.getExtensionFilters().addAll(
 					new FileChooser.ExtensionFilter("CSV", "*.csv")
 					);
-
-			File csvFile = fileChooser.showOpenDialog(bCSV.getScene().getWindow());
+			File csvFile = fileChooser.showOpenDialog(bCSVCicles.getScene().getWindow());
 			if (csvFile != null) {
 				try {
 					JSONArray jsonArray = Parser.parseCiclesCSV(csvFile);
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSV.fxml"));
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/importCSVCicles.fxml"));
 					Stage stage = new Stage();
 					Parent root = loader.load();
-					ImportCSVController importCSVController = loader.getController();
+					ImportCSVCiclesController importCSVController = loader.getController();
 					importCSVController.setImportedJSON(jsonArray);
-					importCSVController.setMainStage((Stage) bCSV.getScene().getWindow());
+					importCSVController.setMainStage((Stage)bCSVCicles.getScene().getWindow());
 					Scene scene = new Scene(root);
 					stage.setScene(scene);
 					stage.show();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("MatriculesAPP | DESKTOP");
+					alert.setHeaderText("Fichero .CSV no válido....");
+					alert.showAndWait();
 				}
 			}
-
 		});
+
+
 	}
 
+	/**
+	 * getAllCicles()
+	 * Obtiene la información ya parseada de la API y la añade al ComboBox
+	 */
 	public void getAllCicles(){
 
-		// getAllCicles()
-		// Obtiene la información ya parseada de la API y la añade al ComboBox
-
-		List<Cicle> ciclesList = Data.cicleManager.getAllCicles();
-		if (ciclesList != null){
+		if (Data.ciclesList != null){
 			ciclesMenu = FXCollections.observableArrayList();
-			ciclesMenu.addAll(ciclesList);
+			ciclesMenu.addAll(Data.ciclesList);
 			cmbCicles.setItems(ciclesMenu);
 		}
 	}
 
+	/**
+	 *  getModuls()
+	 *	Al pusar en un CICLE se obtienen todos su MODULS y se añaden
+	 */
 	@FXML
 	void getModuls(ActionEvent event) {
-
-		// getModuls()
-		// Al pusar en un CICLE se obtienen todos su MODULS y se añaden
 
 		acModul.getPanes().clear();
 

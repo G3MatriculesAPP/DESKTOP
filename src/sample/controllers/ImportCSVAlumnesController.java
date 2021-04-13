@@ -6,19 +6,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import sample.utils.ConnAPI;
-import sample.utils.Data;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ImportCSVController implements Initializable {
+public class ImportCSVAlumnesController implements Initializable {
 
     @FXML    private Label lblNumCicles;
     @FXML    private TableView<JSONObject> tableView;
@@ -38,24 +35,26 @@ public class ImportCSVController implements Initializable {
             observableList.add(jsonObject);
         }
 
-        lblNumCicles.setText("S'han trobat ["+observableList.size()+"] CICLES");
+        lblNumCicles.setText("S'han trobat [" + observableList.size() +"] ALUMNES");
 
         tableView.setItems(observableList);
-        tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("codi")));
-        tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
+        tcCode.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("idRALC")));
+        tcName.setCellValueFactory(jsonObjectStringCellDataFeatures -> new ReadOnlyObjectWrapper<String>(jsonObjectStringCellDataFeatures.getValue().getString("nom")));
     }
-
+    /**
+     *  importData()
+     *  Recoge los CICLES que quiere el usuario importar a la DB y se los pasa a la API llamandola, una vez pasados
+     *	los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
+     */
     @FXML
     void importData(MouseEvent event) {
 
-        // importData()
-        // Recoge los CICLES que quiere el usuario importar a la DB y se los pasa a la API llamandola, una vez pasados
-        // los datos recoge el STATUS y muestra un mensaje dependiendo del resultado.
-
+        
+        
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("data", importedJSON.toString());
 
-        ConnAPI connAPI = new ConnAPI("/api/cicles/insert", "POST", false);
+        ConnAPI connAPI = new ConnAPI("/api/alumnes/insertMany", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 
@@ -69,9 +68,11 @@ public class ImportCSVController implements Initializable {
                 try{
                     System.out.println("[DEBUG] - Datos introducidos correctamente!");
                     Stage stage = (Stage) tableView.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../windows/dashboard.fxml"));
-                    mainStage.getScene().setRoot(loader.load());
                     stage.close();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("MatriculesAPP | DESKTOP");
+                    alert.setHeaderText("Alumnes afegits correctament!");
+                    alert.showAndWait();
                 }catch (Exception e){
                     e.printStackTrace();
                 }

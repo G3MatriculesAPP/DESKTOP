@@ -20,7 +20,135 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Parser {
+	
+	public static void main(String[] args) throws IOException {
+		parseAlumnesCSV(new File("alumnes.csv"));
+	}
 
+	/**
+	 * Parsea un archivo CSV de alumnos admitidos a un objeto JSONArray.
+	 * @param csvFile Archivo CSV de alumnos admitidos.
+	 * @return El contenido del CSV parseado a un objeto JSONArray.
+	 * @throws IOException
+	 */
+	public static JSONArray parseAlumnesCSV(File csvFile) throws IOException {
+		CSVParser csvParser = CSVParser.parse(csvFile, Charset.forName("UTF-8"), CSVFormat.EXCEL);
+
+		List<List<String>> records = new ArrayList<List<String>>();
+		boolean firstRow = true;
+		for (CSVRecord csvRecord : csvParser) {
+			if (!firstRow) {
+				List<String> columnData = new ArrayList<String>();
+				for (int i = 0; i < csvRecord.size(); i++)
+					columnData.add(checkIfBlank(csvRecord.get(i)));
+				records.add(columnData);
+			} else
+				firstRow = false;
+		}
+
+		JSONArray jsonArrayAlumnes = new JSONArray();
+		for (List<String> record : records) {
+			JSONObject jsonObjectAlumne = new JSONObject();
+			jsonObjectAlumne.put("nom", record.get(4));
+			jsonObjectAlumne.put("primerCognom", record.get(5));
+			jsonObjectAlumne.put("segonCognom", record.get(6));
+			jsonObjectAlumne.put("idRALC", record.get(7));
+			jsonObjectAlumne.put("tipusAlumne", record.get(8));
+			jsonObjectAlumne.put("dni", record.get(21));
+			jsonObjectAlumne.put("nie", record.get(22));
+			jsonObjectAlumne.put("pass", record.get(23));
+			jsonObjectAlumne.put("tis", record.get(24));
+			jsonObjectAlumne.put("dataNaixement", record.get(25));
+			jsonObjectAlumne.put("sexe", record.get(26));
+			jsonObjectAlumne.put("nacionalitat", record.get(27));
+			jsonObjectAlumne.put("paisNaixement", record.get(28));
+			jsonObjectAlumne.put("municipiNaixement", record.get(29));
+			jsonObjectAlumne.put("telefon", record.get(39));
+			jsonObjectAlumne.put("email", record.get(40));
+			jsonObjectAlumne.put("codiCentreAssignat", record.get(58));
+
+			JSONObject jsonObjectDireccio = new JSONObject();
+			jsonObjectDireccio.put("tipusVia", record.get(30));
+			jsonObjectDireccio.put("nom", record.get(31));
+			jsonObjectDireccio.put("numero", record.get(32));
+			jsonObjectDireccio.put("altresDades", record.get(33));
+			jsonObjectDireccio.put("provincia", record.get(34));
+			jsonObjectDireccio.put("municipi", record.get(35));
+			jsonObjectDireccio.put("localitat", record.get(36));
+			jsonObjectDireccio.put("codiPostal", record.get(37));
+			jsonObjectDireccio.put("pais", record.get(38));
+			jsonObjectAlumne.put("direccio", jsonObjectDireccio);
+
+			JSONArray jsonArrayTutors = new JSONArray();
+
+			JSONObject jsonObjectTutor1 = new JSONObject();
+			jsonObjectTutor1.put("tipusDocument", record.get(41));
+			jsonObjectTutor1.put("numDocument", record.get(42));
+			jsonObjectTutor1.put("nom", record.get(43));
+			jsonObjectTutor1.put("primerCognom", record.get(44));
+			jsonObjectTutor1.put("segonCognom", record.get(45));
+			jsonArrayTutors.put(jsonObjectTutor1);
+
+			JSONObject jsonObjectTutor2 = new JSONObject();
+			jsonObjectTutor2.put("tipusDocument", record.get(46));
+			jsonObjectTutor2.put("numDocument", record.get(47));
+			jsonObjectTutor2.put("nom", record.get(48));
+			jsonObjectTutor2.put("primerCognom", record.get(49));
+			jsonObjectTutor2.put("segonCognom", record.get(50));
+			jsonArrayTutors.put(jsonObjectTutor2);
+
+			jsonObjectAlumne.put("tutors", jsonArrayTutors);
+
+			JSONObject jsonObjectCentreProcedencia = new JSONObject();
+			jsonObjectCentreProcedencia.put("codi", record.get(51));
+			jsonObjectCentreProcedencia.put("nom", record.get(52));
+			jsonObjectCentreProcedencia.put("codiEnsenyament", record.get(53));
+			jsonObjectCentreProcedencia.put("nomEnsenyament", record.get(54));
+			jsonObjectCentreProcedencia.put("curs", parseInt(record.get(55)));
+			jsonObjectCentreProcedencia.put("llengua", record.get(56));
+			jsonObjectCentreProcedencia.put("religio", record.get(57));
+			jsonObjectAlumne.put("centreProcedencia", jsonObjectCentreProcedencia);
+
+			JSONObject jsonObjectConvocatoria = new JSONObject();
+			jsonObjectConvocatoria.put("nom", record.get(0));
+			jsonObjectConvocatoria.put("codi", record.get(1));
+			jsonObjectConvocatoria.put("tipus", record.get(2));
+			jsonObjectConvocatoria.put("estatSolicitud", record.get(3));
+
+			JSONObject jsonObjectCentre = new JSONObject();
+			jsonObjectCentre.put("codi", record.get(9));
+			jsonObjectCentre.put("nom", record.get(10));
+			jsonObjectCentre.put("naturalesa", record.get(11));
+			jsonObjectCentre.put("municipi", record.get(12));
+			jsonObjectCentre.put("sstt", record.get(13));
+
+			JSONObject jsonObjectEnsenyament = new JSONObject();
+			jsonObjectEnsenyament.put("codi", record.get(14));
+			jsonObjectEnsenyament.put("nom", record.get(15));
+			jsonObjectEnsenyament.put("curs", parseInt(record.get(18)));
+			jsonObjectEnsenyament.put("regim", record.get(19));
+			jsonObjectEnsenyament.put("torn", record.get(19));
+
+			JSONObject jsonObjectModalitat = new JSONObject();
+			jsonObjectModalitat.put("codi", record.get(16));
+			jsonObjectModalitat.put("nom", record.get(17));
+			jsonObjectEnsenyament.put("modalitat", jsonObjectModalitat);
+
+			jsonObjectConvocatoria.put("centre", jsonObjectCentre);
+			jsonObjectConvocatoria.put("ensenyament", jsonObjectEnsenyament);
+			jsonObjectAlumne.put("convocatoria", jsonObjectConvocatoria);
+
+			jsonArrayAlumnes.put(jsonObjectAlumne);
+		}
+		return jsonArrayAlumnes;
+	}
+
+	/**
+	 * Parsea un archivo CSV de ciclos a un objeto JSONArray.
+	 * @param csvFile Archivo CSV de ciclos formativos.
+	 * @return El contenido del CSV parseado a un objeto JSONArray.
+	 * @throws IOException
+	 */
 	public static JSONArray parseCiclesCSV(File csvFile) throws IOException {
 		CSVParser csvParser = CSVParser.parse(csvFile, Charset.forName("UTF-8"), CSVFormat.EXCEL);
 
@@ -116,6 +244,12 @@ public class Parser {
 	}
 
 
+	/**
+	 * @param ciclosAgrupados
+	 * @param key
+	 * @return
+	 * @see {@link #parseCiclesCSV(File)}
+	 */
 	private static Map<String, List<CSVRecord>> getModulosAgrupados(Map<String, List<CSVRecord>> ciclosAgrupados, String key) {
 		Map<String, List<CSVRecord>> modulosAgrupados = new HashMap<String, List<CSVRecord>>();
 		for (CSVRecord csvRecord : ciclosAgrupados.get(key)) {
@@ -127,6 +261,13 @@ public class Parser {
 				modulosAgrupados.get(csvRecord.get(6)).add(csvRecord);
 		}
 		return modulosAgrupados;
+	}
+	
+	private static Object parseInt(String string) {
+		if (string != null)
+			return Integer.parseInt(string);
+		else
+			return null;
 	}
 
 	@SuppressWarnings("deprecation")

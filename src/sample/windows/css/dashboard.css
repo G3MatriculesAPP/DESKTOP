@@ -36,3 +36,34 @@
     -fx-cell-size: 50;
 
 }
+
+.list-view{
+    -fx-padding: 5px ;
+}
+
+.list-view .list-cell {
+    -fx-text-fill: #000000;
+    -fx-font-size: 14;
+    -fx-background-radius: 30px;
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 3px, 5px ;
+}
+
+.list-view .list-cell:empty {
+    -fx-padding: 4px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 1px;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.text-field{
+    -fx-background-radius: 30px;
+}
+
+.choice-box{
+    -fx-background-radius: 30px;
+}

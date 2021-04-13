@@ -1,8 +1,8 @@
 # DESKTOP
 
-## DESCRIPCION:
-Repositorio de la aplicacion DESKTOP del proyecto MatriculesAPP del Grupo3 (Ivan Lopez, Gerard Serret y Xavi Pineda)
-Desde esta aplicacion se gestiona todas las tareas a nivel administrativo y mantenimiento de este.
+Repositorio de la aplicacion DESKTOP del proyecto MatriculesAPP del Grupo3 (Iván López, Gerard Serret y Xavi Pineda). Desde esta aplicación se gestiona todas las tareas a nivel administrativo y mantenimiento de este.
+
+Para compilar esta aplicación, añade los argumentos de Java que encontrarás a continuación y ejecuta el método main de la clase `sample.MainClass.java`.
 
 ### VM ARGUMENTS
 #### LINUX:
@@ -14,4 +14,3 @@ Desde esta aplicacion se gestiona todas las tareas a nivel administrativo y mant
 ```bash
 --module-path "libs/javaFX_windows/lib" --add-modules javafx.controls,javafx.fxml
 ```
-
