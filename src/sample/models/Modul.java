@@ -1,10 +1,8 @@
 package sample.models;
 
-import javafx.scene.Node;
-
 import java.util.Date;
 
-public class Modul extends Node {
+public class Modul {
 
     private String codiModul;
     private String nomModul;
@@ -76,4 +74,5 @@ public class Modul extends Node {
     public String toString() {
         return nomModul;
     }
+
 }
