@@ -9,4 +9,8 @@ public interface IAlumne {
 
     public JSONObject getAlumneData(String idAlumne);
 
+    public boolean deleteAlumne(String idAlumne);
+
+    public boolean updateAlumne(JSONObject alumneJSON);
+
 }

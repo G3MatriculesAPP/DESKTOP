@@ -151,12 +151,17 @@
                   </Accordion>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="GUARDAR CANVIS!" textFill="WHITE">
+                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="ELIMINAR" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="ELIMINAR" textFill="WHITE">
+                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveAlumne" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="GUARDAR!" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnValidar" mnemonicParsing="false" onAction="#checkRequisits" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="VALIDAR" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>

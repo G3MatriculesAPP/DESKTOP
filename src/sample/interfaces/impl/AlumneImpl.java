@@ -30,7 +30,7 @@ public class AlumneImpl implements IAlumne {
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("id", idAlumne);
 
-        ConnAPI connAPI = new ConnAPI("/api/alumnes/readOne", "POST", true);
+        ConnAPI connAPI = new ConnAPI("/api/alumnes/readOne", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 
@@ -53,7 +53,19 @@ public class AlumneImpl implements IAlumne {
         if (cpJSON.isNull("llengua"))
             cpJSON.put("curs", "");
 
+        JSONObject dirJSON = alumneData.getJSONObject("direccio");
+        if (dirJSON.isNull("localitat"))
+            dirJSON.put("localitat", "");
+
+        JSONObject centreProcedenciaJSON = alumneData.getJSONObject("centreProcedencia");
+        if (centreProcedenciaJSON.isNull("curs"))
+            centreProcedenciaJSON.put("curs", "");
+
+        alumneData.put("centreProcedencia", centreProcedenciaJSON);
+        alumneData.put("direccio", dirJSON);
         alumneData.put("centreProcedencia", cpJSON);
+
+
 
         if (!alumneData.isNull("dni"))
             alumneData.put("tipusDocument", 0);
@@ -61,5 +73,33 @@ public class AlumneImpl implements IAlumne {
             alumneData.put("tipusDocument", 1);
 
         return alumneData;
+    }
+
+    @Override
+    public boolean deleteAlumne(String idAlumne) {
+
+        JSONObject requestJSON = new JSONObject();
+        requestJSON.put("id", idAlumne);
+
+        ConnAPI connAPI = new ConnAPI("/api/alumnes/deleteOne", "DELETE", false);
+        connAPI.setData(requestJSON);
+        connAPI.establishConn();
+
+        int status = connAPI.getStatus();
+        return status == 200;
+    }
+
+    @Override
+    public boolean updateAlumne(JSONObject alumneJSON) {
+
+        JSONObject requestJSON = new JSONObject();
+        requestJSON.put("data", alumneJSON);
+
+        ConnAPI connAPI = new ConnAPI("/api/alumnes/updateOne", "PUT", false);
+        connAPI.setData(requestJSON);
+        connAPI.establishConn();
+
+        int status = connAPI.getStatus();
+        return status == 200;
     }
 }
