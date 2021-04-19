@@ -45,6 +45,7 @@ public class AlumnesController implements Initializable {
     private ObservableList<Cicle> ciclesMenu;
     private int pos;
     private VBox vBoxTutors;
+    private JSONObject alumneData;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -112,7 +113,7 @@ public class AlumnesController implements Initializable {
     void getDataAlumne(MouseEvent event) {
 
         pos = listAlumnes.getSelectionModel().getSelectedIndex();
-        JSONObject alumneData = Data.alumneManager.getAlumneData(arrayJSON.getJSONObject(pos).getString("_id"));
+        alumneData = Data.alumneManager.getAlumneData(arrayJSON.getJSONObject(pos).getString("_id"));
         transformData(alumneData);
     }
 
@@ -330,22 +331,31 @@ public class AlumnesController implements Initializable {
 
         alumneJSON.put("centreProcedencia", centreProcedenciaJSON);
         JSONObject userData = arrayJSON.getJSONObject(pos);
+        System.out.println(userData.toString());
         String id = userData.getString("_id");
+
         alumneJSON.put("_id", id);
-        if (!userData.isNull("pass"))
-            alumneJSON.put("pass", userData.getString("pass"));
+        if (!alumneData.isNull("pass")){
+            String pass = alumneData.getString("pass");
+            alumneJSON.put("pass", pass);
+        }
         else
             alumneJSON.put("pass", "");
-        
-        if (!userData.isNull("perfilRequisits"))
-            alumneJSON.put("perfilRequisits", userData.getString("perfilRequisits"));
+
+        if (!alumneData.isNull("perfilRequisits")){
+            String perfil = alumneData.getString("perfilRequisits");
+            alumneJSON.put("perfilRequisits", alumneData.getString("perfilRequisits"));
+        }
         else
             alumneJSON.put("perfilRequisits", "");
 
-        if (!userData.isNull("estatRequisits"))
-            alumneJSON.put("estatRequisits", userData.getString("estatRequisits"));
-        else
-            alumneJSON.put("estatRequisits", "");
+        if (!alumneData.isNull("estatRequisits")){
+            JSONArray arrayEstats = alumneData.getJSONArray("estatRequisits");
+            alumneJSON.put("estatRequisits", alumneData.getJSONArray("estatRequisits"));
+        }else
+            alumneJSON.put("estatRequisits", new JSONArray());
+
+
         System.out.println(alumneJSON.toString(4));
         boolean updated = Data.alumneManager.updateAlumne(alumneJSON);
 
