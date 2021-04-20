@@ -15,6 +15,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.json.JSONArray;
+
+import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
@@ -25,6 +27,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -32,6 +35,7 @@ public class DashboardController implements Initializable {
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
 	@FXML   private Button bCSVCicles;
+	private Modul modul;
 
 	private ObservableList<Cicle> ciclesMenu;
 
@@ -93,7 +97,7 @@ public class DashboardController implements Initializable {
 		TextField idCicle = new TextField();
 		idCicle.setPromptText("Codi del cicle");
 		grid.add(idCicle, 1, 1);
-		
+
 		grid.add(new Label("Codi d'adaptació curricular:"), 0, 2);
 		TextField codiAdapCicle = new TextField();
 		codiAdapCicle.setPromptText("Codi d'adaptació curricular del cicle");
@@ -113,26 +117,20 @@ public class DashboardController implements Initializable {
 		ListView<Modul> listModulsCicle = new ListView<Modul>();
 		listModulsCicle.setPrefHeight(150);
 		grid.add(listModulsCicle, 1, 5);
-		
+
 		GridPane modulGridPane = new GridPane();		
 
 		Button addModulButton = new Button("Afegir");
 		addModulButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Reemplazar mockups por un nuevo Dialog donde el usuario pueda introducir Modulos
-				Modul modul1 = new Modul("M01", "Programació avançada", 60, 60, new Date(), new Date());
-				listModulsCicle.getItems().add(modul1);
-				
-				Modul modul2 = new Modul("M02", "Bases de dades", 60, 60, new Date(), new Date());
-				listModulsCicle.getItems().add(modul2);
-				
-				Modul modul3 = new Modul("M03", "Sistemes operatius", 60, 60, new Date(), new Date());
-				listModulsCicle.getItems().add(modul3);
+				Modul modul = addModulDialog();
+				if (modul != null)
+					listModulsCicle.getItems().add(modul);
 			}
 		});
 		modulGridPane.add(addModulButton, 0, 1);
-		
+
 		Button deleteModulButton = new Button("Suprimir");
 		deleteModulButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -141,7 +139,7 @@ public class DashboardController implements Initializable {
 			}
 		});
 		modulGridPane.add(deleteModulButton, 0, 2);
-		
+
 		grid.add(modulGridPane, 2, 5);
 
 		dialog.getDialogPane().setContent(grid);
@@ -152,6 +150,107 @@ public class DashboardController implements Initializable {
 		});
 
 		dialog.show();
+	}
+
+	private Modul addModulDialog() {
+		Dialog dialog = new Dialog();
+		dialog.setTitle("MatriculesAPP | DESKTOP");
+		dialog.setHeaderText("Nom i dades del mòdul");
+
+		ButtonType okButtonType = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+
+		grid.add(new Label("Nom:"), 0, 0);
+		TextField nameModul = new TextField();
+		nameModul.setPromptText("Nom del mòdul");
+		grid.add(nameModul, 1, 0);
+
+		grid.add(new Label("Codi:"), 0, 1);
+		TextField idModul = new TextField();
+		idModul.setPromptText("Codi del mòdul");
+		grid.add(idModul, 1, 1);
+
+		grid.add(new Label("Durada mínima:"), 0, 2);
+		TextField duradaMinModul = new TextField();
+		duradaMinModul.setPromptText("Durada mínima del mòdul");
+		grid.add(duradaMinModul, 1, 2);
+
+		grid.add(new Label("Durada màxima:"), 0, 3);
+		TextField duradaMaxModul = new TextField();
+		duradaMaxModul.setPromptText("Durada màxima del mòdul");
+		grid.add(duradaMaxModul, 1, 3);
+
+		grid.add(new Label("Data d'inici:"), 0, 4);
+		DatePicker dataIniciModul = new DatePicker();
+		dataIniciModul.setPromptText("Data d'inici del mòdul");
+		grid.add(dataIniciModul, 1, 4);
+
+		grid.add(new Label("Data de fi:"), 0, 5);
+		DatePicker dataFiModul = new DatePicker();
+		dataFiModul.setPromptText("Data de fi del mòdul");
+		grid.add(dataFiModul, 1, 5);
+
+		grid.add(new Label("Unitats formatives:"), 0, 6);
+		ListView<UnitatFormativa> listUFsModul= new ListView<UnitatFormativa>();
+		listUFsModul.setPrefHeight(150);
+		grid.add(listUFsModul, 1, 6);
+
+		GridPane modulGridPane = new GridPane();		
+
+		Button addUfButton = new Button("Afegir");
+		addUfButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				UnitatFormativa uf = new UnitatFormativa("1234", "Introducció als bucles for", 70, new Date(), 1);
+				listUFsModul.getItems().add(uf);
+			}
+		});
+		modulGridPane.add(addUfButton, 0, 1);
+
+		Button deleteUfButton = new Button("Suprimir");
+		deleteUfButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				listUFsModul.getItems().remove(listUFsModul.getSelectionModel().getSelectedItem());
+			}
+		});
+		modulGridPane.add(deleteUfButton, 0, 2);
+
+		grid.add(modulGridPane, 2, 6);
+
+		dialog.getDialogPane().setContent(grid);
+
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == okButtonType) {
+				Modul modulLocal = new Modul();
+				if (!idModul.getText().isBlank())
+					modulLocal.setCodiModul(idModul.getText());
+				if (!nameModul.getText().isBlank())
+					modulLocal.setNomModul(nameModul.getText());
+				if (!duradaMinModul.getText().isBlank())
+					modulLocal.setDuradaMinModul(Integer.parseInt(duradaMinModul.getText()));
+				if (!duradaMaxModul.getText().isBlank())
+					modulLocal.setDuradaMaxModul(Integer.parseInt(duradaMaxModul.getText()));
+				if (dataIniciModul.getValue() != null)
+					modulLocal.setDataIniciModul(Date.from(dataIniciModul.getValue().atStartOfDay().toInstant(null)));
+				if (dataFiModul.getValue() != null)
+					modulLocal.setDataFiModul(Date.from(dataFiModul.getValue().atStartOfDay().toInstant(null)));
+				modulLocal.setUnitatsFormatives(listUFsModul.getItems());
+				return new Pair<>("modul", modulLocal);
+			}
+			return dialogButton;
+		});
+		
+		Optional<Pair<String, Modul>> result = dialog.showAndWait();
+		result.ifPresent(action -> {
+			modul = action.getValue();
+		});
+
+		return modul;
 	}
 
 	/**
