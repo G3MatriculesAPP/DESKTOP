@@ -73,9 +73,6 @@ public class LoginController implements Initializable {
      *  Llama a la API y consulta si el login es correcto o no
      */
     private void checkLogin(String email, String pass) {
-
-               
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("itEmail", email);
         jsonObject.put("itPassword", Encypter.hashMD5(pass));
@@ -109,12 +106,7 @@ public class LoginController implements Initializable {
         connAPI.closeConn();
     }
 
-    /**
-     *  gotoLogin()
-     *  Permite cambiar la SCENE, pasando de Login a Dashboard
-     */
     private void gotoLogin() {
-
         try {
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("../windows/mainWindow.fxml"));

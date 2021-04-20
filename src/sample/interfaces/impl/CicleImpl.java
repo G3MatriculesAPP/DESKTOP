@@ -20,8 +20,6 @@ public class CicleImpl implements ICicle {
     @Override
     public ArrayList<Cicle> getAllCicles() {
 
-         
-
         ArrayList<Cicle> arrayCicles = new ArrayList<>();
 
         ConnAPI connAPI = new ConnAPI("/api/cicles/readAll", "GET", false);
@@ -37,7 +35,7 @@ public class CicleImpl implements ICicle {
                 c.setCodiCicle(rawJSON.getString("codi"));
                 c.setNomCicle(rawJSON.getString("nom"));
                 c.setHoresCicle(rawJSON.getInt("hores"));
-                c.setCodiAdaptacioCur(rawJSON.getString("codiAdaptacioCurricular"));
+                c.setCodiAdaptacioCurs(rawJSON.getString("codiAdaptacioCurricular"));
                 if (!rawJSON.isNull("dataInici")){
                     JSONObject dateJSON = rawJSON.getJSONObject("dataInici");
                     Date date = Data.format.parse(dateJSON.getString("date"));
