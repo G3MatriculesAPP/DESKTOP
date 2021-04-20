@@ -202,6 +202,7 @@ public class DashboardController implements Initializable {
 					alert.setTitle("MatriculesAPP | DESKTOP");
 					alert.setHeaderText("Cicle afegit correctament!");
 					alert.showAndWait();
+					break;
 
 				case 500:
 					System.out.println("[DEBUG] - Error al afegir el cicle...");
