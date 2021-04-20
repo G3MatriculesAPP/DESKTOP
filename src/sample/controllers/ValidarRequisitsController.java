@@ -51,7 +51,7 @@ public class ValidarRequisitsController implements Initializable {
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("nomPerfil", nomPerfil);
         requestJSON.put("idAlumne", idAlumne);
-        ConnAPI connAPI = new ConnAPI("/api/reqPerfils/readOneByAlumne", "POST", true);
+        ConnAPI connAPI = new ConnAPI("/api/reqPerfils/readOneByAlumne", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 
@@ -68,9 +68,12 @@ public class ValidarRequisitsController implements Initializable {
 
         for(int i = 0; i < dataJSON.length(); i++){
             JSONObject rawData = dataJSON.getJSONObject(i);
-            int reqStatus = statusReqsJSON.getInt(i);
+            int reqStatus = 0;
+            if(!statusReqsJSON.isNull(i))
+                reqStatus = statusReqsJSON.getInt(i);
 
-            HBox hBox = new HBox();
+
+                HBox hBox = new HBox();
             hBox.setPrefSize(200, 50);
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
@@ -94,9 +97,9 @@ public class ValidarRequisitsController implements Initializable {
             button.setOnAction(actionEvent -> {
                 JSONObject requestJSON2 = new JSONObject();
                 requestJSON2.put("id", idAlumne);
-                requestJSON2.put("nomReq", tf.getText().replace(" ", "_"));
+                requestJSON2.put("nomReq", tf.getText().replace(" ", "%20"));
 
-                ConnAPI connAPI1 = new ConnAPI("/api/perfils/getRequisit", "POST", true);
+                ConnAPI connAPI1 = new ConnAPI("/api/perfils/getRequisit", "POST", false);
                 connAPI1.setData(requestJSON2);
                 connAPI1.establishConn();
 
@@ -171,7 +174,7 @@ public class ValidarRequisitsController implements Initializable {
         requestJSON.put("id", idAlumne);
         requestJSON.put("estatRequisits", arrayStatus);
 
-        ConnAPI connAPI = new ConnAPI("/api/reqPerfils/updateStatus", "POST", true);
+        ConnAPI connAPI = new ConnAPI("/api/reqPerfils/updateStatus", "POST", false);
         connAPI.setData(requestJSON);
         connAPI.establishConn();
 

@@ -21,11 +21,14 @@ import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Cicle;
 import sample.models.Modul;
 import sample.models.UnitatFormativa;
+import sample.utils.ConnAPI;
 import sample.utils.Data;
 import sample.utils.Parser;
 
 import java.io.File;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -155,7 +158,7 @@ public class DashboardController implements Initializable {
 			cicle.setNomCicle(nameCicle.getText());
 			cicle.setCodiAdaptacioCurs(codiAdapCicle.getText());
 			cicle.setHoresCicle(Integer.parseInt(hoursCicle.getText()));
-			cicle.setDataIniciCicle(Date.from(dataIniciCicle.getValue().atStartOfDay().toInstant(null)));
+			cicle.setDataIniciCicle(Date.from(dataIniciCicle.getValue().atStartOfDay().toInstant(ZoneOffset.ofHours(2))));
 			cicle.setModuls(listModulsCicle.getItems());
 			
 			JSONObject jsonObject = new JSONObject();
@@ -164,7 +167,6 @@ public class DashboardController implements Initializable {
 			jsonObject.put("codi", cicle.getCodiCicle());
 			jsonObject.put("codiAdaptacioCurricular", cicle.getCodiAdaptacioCurs());
 			jsonObject.put("dataInici", cicle.getDataIniciCicle().toString());
-			
 			JSONArray modulsJsonArray = new JSONArray();
 			
 			for (Modul modul : cicle.getModuls()) {
@@ -178,6 +180,75 @@ public class DashboardController implements Initializable {
 				modulsJsonArray.put(modulJsonObject);
 			}
 			jsonObject.put("moduls", modulsJsonArray);
+
+			JSONObject requestJSON = new JSONObject();
+			requestJSON.put("data", jsonObject.toString());
+
+			ConnAPI connAPI = new ConnAPI("/api/cicles/insertOne", "POST", false);
+			connAPI.setData(requestJSON);
+			connAPI.establishConn();
+
+			int status = connAPI.getStatus();
+			Alert alert;
+			switch (status){
+				case 0:
+					System.out.println("[DEBUG] - Error al contactar con la API...");
+					break;
+
+				case 200:
+					System.out.println("[DEBUG] - Cicle afegit correctament!");
+					cmbCicles.getItems().add(cicle);
+					alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("MatriculesAPP | DESKTOP");
+					alert.setHeaderText("Cicle afegit correctament!");
+					alert.showAndWait();
+
+				case 500:
+					System.out.println("[DEBUG] - Error al afegir el cicle...");
+					alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("MatriculesAPP | DESKTOP");
+					alert.setHeaderText("Error al afegir el cicle...!");
+					alert.showAndWait();
+					break;
+			}
+
+		}
+	}
+
+	@FXML
+	void deleteCicle(ActionEvent event) {
+		String id  = cmbCicles.getSelectionModel().getSelectedItem().getIdCicle();
+
+		JSONObject requestJSON = new JSONObject();
+		requestJSON.put("id", id);
+
+		ConnAPI connAPI = new ConnAPI("/api/cicles/deleteOne", "DELETE", false);
+		connAPI.setData(requestJSON);
+		connAPI.establishConn();
+
+		int status = connAPI.getStatus();
+		Alert alert;
+		switch (status){
+			case 0:
+				System.out.println("[DEBUG] - Error al contactar con la API...");
+				break;
+
+			case 200:
+				System.out.println("[DEBUG] - Cicle eliminat correctament!");
+				cmbCicles.getItems().remove(cmbCicles.getSelectionModel().getSelectedIndex());
+				alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("MatriculesAPP | DESKTOP");
+				alert.setHeaderText("Cicle eliminat correctament!");
+				alert.showAndWait();
+				break;
+
+			case 500:
+				System.out.println("[DEBUG] - Error al eliminar el cicle...");
+				alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("MatriculesAPP | DESKTOP");
+				alert.setHeaderText("Error al eliminar el cicle...!");
+				alert.showAndWait();
+				break;
 		}
 	}
 
@@ -267,9 +338,9 @@ public class DashboardController implements Initializable {
 				if (!duradaMaxModul.getText().isBlank())
 					modulLocal.setDuradaMaxModul(Integer.parseInt(duradaMaxModul.getText()));
 				if (dataIniciModul.getValue() != null)
-					modulLocal.setDataIniciModul(Date.from(dataIniciModul.getValue().atStartOfDay().toInstant(null)));
+					modulLocal.setDataIniciModul(Date.from(dataIniciModul.getValue().atStartOfDay().toInstant(ZoneOffset.ofHours(2))));
 				if (dataFiModul.getValue() != null)
-					modulLocal.setDataFiModul(Date.from(dataFiModul.getValue().atStartOfDay().toInstant(null)));
+					modulLocal.setDataFiModul(Date.from(dataFiModul.getValue().atStartOfDay().toInstant(ZoneOffset.ofHours(2))));
 				modulLocal.setUnitatsFormatives(listUFsModul.getItems());
 				return new Pair<>("modul", modulLocal);
 			}

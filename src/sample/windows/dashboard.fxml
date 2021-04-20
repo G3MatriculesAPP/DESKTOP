@@ -24,13 +24,18 @@
       </ScrollPane>
       <Pane layoutX="25.0" layoutY="100.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #F2F2F2; -fx-background-radius: 30;">
          <children>
-            <ComboBox fx:id="cmbCicles" layoutX="8.0" layoutY="7.0" onAction="#getModuls" prefHeight="35.0" prefWidth="345.0" promptText="SELECCIONA UN CICLE" stylesheets="@css/dashboard.css" />
+            <ComboBox fx:id="cmbCicles" layoutX="8.0" layoutY="7.0" onAction="#getModuls" prefHeight="35.0" prefWidth="297.0" promptText="SELECCIONA UN CICLE" stylesheets="@css/dashboard.css" />
             <Button fx:id="bCSVCicles" graphicTextGap="0.0" layoutX="407.0" layoutY="7.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="85.0" style="-fx-background-radius: 30; -fx-background-color: #4E68F1;" text="IMPORTAR" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="10.0" />
                </font>
             </Button>
             <Button fx:id="btnAdd" graphicTextGap="0.0" layoutX="362.0" layoutY="7.0" mnemonicParsing="false" onAction="#addCicle" prefHeight="35.0" prefWidth="38.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="+" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDelete" graphicTextGap="0.0" layoutX="315.0" layoutY="7.0" mnemonicParsing="false" onAction="#deleteCicle" prefHeight="35.0" prefWidth="38.0" style="-fx-background-color: #4E68F1; -fx-background-radius: 30;" text="-" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>

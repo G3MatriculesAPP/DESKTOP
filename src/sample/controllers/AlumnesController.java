@@ -240,6 +240,92 @@ public class AlumnesController implements Initializable {
         }
     }
 
+    @FXML
+    void newAlumne(ActionEvent event) {
+
+        vBoxData.setVisible(true);
+
+        gridPaneData.add(new TextField(), 0, 0, 1, 1);
+        gridPaneData.add(new TextField(), 1, 0, 1, 1);
+        gridPaneData.add(new TextField(), 2, 0, 1, 1);
+
+        gridPaneData.add(new TextField(), 0, 1, 1, 1);
+        gridPaneData.add(new TextField(), 1, 1, 1, 1);
+        gridPaneData.add(new TextField(), 2, 1, 1, 1);
+
+        gridPaneData.add(new DatePicker(), 0, 2, 1, 1);
+        gridPaneData.add(new TextField(), 1, 2, 1, 1);
+        gridPaneData.add(new TextField(), 2, 2, 1, 1);
+
+        String[] tipusDocument = new String[]{"DNI", "NIE"};
+        ChoiceBox cbDoc = new ChoiceBox();
+        cbDoc.getItems().addAll(tipusDocument);
+        gridPaneData.add(cbDoc, 0, 3, 1, 1);
+        gridPaneData.add(new TextField(), 1, 3, 1, 1);
+        gridPaneData.add(new TextField(), 2, 3, 1, 1);
+
+        String[] listSexes = new String[]{"HOME", "DONA"};
+        ChoiceBox cbSexe = new ChoiceBox();
+        cbSexe.getItems().addAll(listSexes);
+        gridPaneData.add(cbSexe, 0, 4, 1, 1);
+        gridPaneData.add(new TextField(), 1, 4, 1, 1);
+        gridPaneData.add(new TextField(), 2, 4, 1, 1);
+
+        // GRIDPANE - TUTORS
+
+        vBoxTutors = new VBox();
+        vBoxTutors.setSpacing(10);
+        for (int i = 0; i < 1; i++){
+            GridPane gpTutor = new GridPane();
+            gpTutor.add(new TextField(), 0, 0, 1, 1);
+            gpTutor.add(new TextField(), 1, 0, 1, 1);
+            gpTutor.add(new TextField(), 2, 0, 1, 1);
+
+            gpTutor.add(new TextField(), 0, 1, 1, 1);
+            gpTutor.add(new TextField(), 1, 1, 1, 1);
+            vBoxTutors.getChildren().add(gpTutor);
+        }
+
+        acTutors.setContent(vBoxTutors);
+
+        // GRIDPANE - CONVOCATORIA:
+        gpConvocatoria.add(new TextField(), 0, 0, 1, 1);
+        gpConvocatoria.add(new TextField(), 1, 0, 1, 1);
+        gpConvocatoria.add(new TextField(), 0, 1, 1, 1);
+        gpConvocatoria.add(new TextField(), 1, 1, 1, 1);
+
+        gpEnsenyament.add(new TextField(), 0, 0, 1, 1);
+        gpEnsenyament.add(new TextField(), 1, 0, 1, 1);
+        gpEnsenyament.add(new TextField(), 2, 0, 1, 1);
+        gpEnsenyament.add(new TextField(), 0, 1, 1, 1);
+        gpEnsenyament.add(new TextField(), 1, 1, 1, 1);
+
+        gpCentre.add(new TextField(), 0, 0, 1, 1);
+        gpCentre.add(new TextField(), 1, 0, 1, 1);
+        gpCentre.add(new TextField(), 2, 0, 1, 1);
+        gpCentre.add(new TextField(), 0, 1, 1, 1);
+        gpCentre.add(new TextField(), 1, 1, 1, 1);
+
+        // GRIDPANE - DIRECCIO
+        gpDireccio.add(new TextField(), 0, 0, 1, 1);
+        gpDireccio.add(new TextField(), 1, 0, 1, 1);
+        gpDireccio.add(new TextField(), 2, 0, 1, 1);
+        gpDireccio.add(new TextField(), 0, 1, 1, 1);
+        gpDireccio.add(new TextField(), 1, 1, 1, 1);
+        gpDireccio.add(new TextField(), 2, 1, 1, 1);
+        gpDireccio.add(new TextField(), 0, 2, 1, 1);
+        gpDireccio.add(new TextField(), 1, 2, 1, 1);
+        gpDireccio.add(new TextField(), 2, 2, 1, 1);
+
+        // GRIDPANE - CENTRE PROCEDENCIA
+        gpCentreProcedencia.add(new TextField(), 0, 0, 1, 1);
+        gpCentreProcedencia.add(new TextField(), 1, 0, 1, 1);
+        gpCentreProcedencia.add(new TextField(), 2, 0, 1, 1);
+        gpCentreProcedencia.add(new TextField(), 0, 1, 1, 1);
+        gpCentreProcedencia.add(new TextField(), 1, 1, 1, 1);
+        gpCentreProcedencia.add(new TextField(), 2, 1, 1, 1);
+
+    }
 
     /**
      * Recorre todos los TextField y va montando un nuevo JSONObject con los datos en este, los datos clave como la contraseña
@@ -248,146 +334,150 @@ public class AlumnesController implements Initializable {
      */
     @FXML
     void saveAlumne(ActionEvent event) {
-        JSONObject alumneJSON = new JSONObject();
-        String[] mainKeysJSON = new String[]{"nom", "primerCognom", "segonCognom",
-                "telefon", "email", "nacionalitat",
-                "dataNaixement", "paisNaixement", "municipiNaixement", "tipusDocument", "",
-                "idRALC", "sexe", "tipusAlumne", "codiCentreAssignat"};
+        try {
+            JSONObject alumneJSON = new JSONObject();
+            String[] mainKeysJSON = new String[]{"nom", "primerCognom", "segonCognom",
+                    "telefon", "email", "nacionalitat",
+                    "dataNaixement", "paisNaixement", "municipiNaixement", "tipusDocument", "",
+                    "idRALC", "sexe", "tipusAlumne", "codiCentreAssignat"};
 
-        for (int i = 0; i < mainKeysJSON.length; i++){
-
-            if (i == 6){
-                DatePicker dp = (DatePicker) gridPaneData.getChildren().get(i);
-                LocalDate localDate = dp.getValue();
-                Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-                Date date = Date.from(instant);
-                System.out.println(date);
-                alumneJSON.put(mainKeysJSON[i], date.toGMTString());
-            }else if (i == 9 || i == 12){
-                ChoiceBox cb = (ChoiceBox) gridPaneData.getChildren().get(i);
-                String selection = (String) cb.getSelectionModel().getSelectedItem();
-                if (selection.equals("DNI")){
-                    i++;
+            for (int i = 0; i < mainKeysJSON.length; i++){
+                if (i == 6){
+                    DatePicker dp = (DatePicker) gridPaneData.getChildren().get(i);
+                    LocalDate localDate = dp.getValue();
+                    Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+                    Date date = Date.from(instant);
+                    System.out.println(date);
+                    alumneJSON.put(mainKeysJSON[i], date.toGMTString());
+                }else if (i == 9 || i == 12){
+                    ChoiceBox cb = (ChoiceBox) gridPaneData.getChildren().get(i);
+                    String selection = (String) cb.getSelectionModel().getSelectedItem();
+                    if (selection.equals("DNI")){
+                        i++;
+                        TextField tf = (TextField) gridPaneData.getChildren().get(i);
+                        alumneJSON.put("dni", tf.getText());
+                    }else if(selection.equals("NIE")){
+                        i++;
+                        TextField tf = (TextField) gridPaneData.getChildren().get(i);
+                        alumneJSON.put("nie", tf.getText());
+                    }else if (selection.equals("HOME")){
+                        alumneJSON.put(mainKeysJSON[i], "Home");
+                    }else if(selection.equals("DONA")){
+                        alumneJSON.put(mainKeysJSON[i], "Dona");
+                    }
+                }else{
                     TextField tf = (TextField) gridPaneData.getChildren().get(i);
-                    alumneJSON.put("dni", tf.getText());
-                }else if(selection.equals("NIE")){
-                    i++;
-                    TextField tf = (TextField) gridPaneData.getChildren().get(i);
-                    alumneJSON.put("nie", tf.getText());
-                }else if (selection.equals("HOME")){
-                    alumneJSON.put(mainKeysJSON[i], "Home");
-                }else if(selection.equals("DONA")){
-                    alumneJSON.put(mainKeysJSON[i], "Dona");
+                    alumneJSON.put(mainKeysJSON[i], tf.getText());
                 }
-            }else{
-                TextField tf = (TextField) gridPaneData.getChildren().get(i);
-                alumneJSON.put(mainKeysJSON[i], tf.getText());
+
             }
 
-        }
+            // TUTORS:
 
-        // TUTORS:
-
-        String[] tutorKeysJSON = new String[]{"primerCognom", "segonCognom", "tipusDocument", "nom", "numDocument"};
-        JSONArray arrayTutorsJSON = new JSONArray();
-        for (int i = 0; i < vBoxTutors.getChildren().size(); i++){
-            GridPane gp = (GridPane) vBoxTutors.getChildren().get(i);
-            JSONObject tutorJSON = new JSONObject();
-            for (int x = 0; x < tutorKeysJSON.length; x++){
-                TextField tf = (TextField) gp.getChildren().get(x);
-                tutorJSON.put(tutorKeysJSON[x], tf.getText());
+            String[] tutorKeysJSON = new String[]{"primerCognom", "segonCognom", "tipusDocument", "nom", "numDocument"};
+            JSONArray arrayTutorsJSON = new JSONArray();
+            for (int i = 0; i < vBoxTutors.getChildren().size(); i++){
+                GridPane gp = (GridPane) vBoxTutors.getChildren().get(i);
+                JSONObject tutorJSON = new JSONObject();
+                for (int x = 0; x < tutorKeysJSON.length; x++){
+                    TextField tf = (TextField) gp.getChildren().get(x);
+                    tutorJSON.put(tutorKeysJSON[x], tf.getText());
+                }
+                arrayTutorsJSON.put(i, tutorJSON);
             }
-            arrayTutorsJSON.put(i, tutorJSON);
-        }
-        alumneJSON.put("tutors", arrayTutorsJSON);
+            alumneJSON.put("tutors", arrayTutorsJSON);
 
-        // CONVOCATORIA:
-        String[] convocatoriaKeysJSON = new String[]{"estatSolicitud", "nom", "tipus", "codi"};
-        String[] ensenyamentKeysJSON = new String[]{"torn", "nom", "curs", "regim", "codi"};
-        String[] centreKeysJSON = new String[]{"municipi", "sstt", "naturalesa", "nom", "codi"};
+            // CONVOCATORIA:
+            String[] convocatoriaKeysJSON = new String[]{"estatSolicitud", "nom", "tipus", "codi"};
+            String[] ensenyamentKeysJSON = new String[]{"torn", "nom", "curs", "regim", "codi"};
+            String[] centreKeysJSON = new String[]{"municipi", "sstt", "naturalesa", "nom", "codi"};
 
-        JSONObject convocatoriaJSON = new JSONObject();
-        JSONObject ensenyamentJSON = new JSONObject();
-        JSONObject centreJSON = new JSONObject();
+            JSONObject convocatoriaJSON = new JSONObject();
+            JSONObject ensenyamentJSON = new JSONObject();
+            JSONObject centreJSON = new JSONObject();
 
-        for (int i = 0; i < convocatoriaKeysJSON.length; i++){
-            TextField tf = (TextField) gpConvocatoria.getChildren().get(i);
-            convocatoriaJSON.put(convocatoriaKeysJSON[i], tf.getText());
-        }
+            for (int i = 0; i < convocatoriaKeysJSON.length; i++){
+                TextField tf = (TextField) gpConvocatoria.getChildren().get(i);
+                convocatoriaJSON.put(convocatoriaKeysJSON[i], tf.getText());
+            }
 
-        for (int i = 0; i < ensenyamentKeysJSON.length; i++){
-            TextField tf = (TextField) gpEnsenyament.getChildren().get(i);
-            ensenyamentJSON.put(ensenyamentKeysJSON[i], tf.getText());
-        }
+            for (int i = 0; i < ensenyamentKeysJSON.length; i++){
+                TextField tf = (TextField) gpEnsenyament.getChildren().get(i);
+                ensenyamentJSON.put(ensenyamentKeysJSON[i], tf.getText());
+            }
 
-        for (int i = 0; i < centreKeysJSON.length; i++){
-            TextField tf = (TextField) gpCentre.getChildren().get(i);
-            centreJSON.put(centreKeysJSON[i], tf.getText());
-        }
+            for (int i = 0; i < centreKeysJSON.length; i++){
+                TextField tf = (TextField) gpCentre.getChildren().get(i);
+                centreJSON.put(centreKeysJSON[i], tf.getText());
+            }
 
-        convocatoriaJSON.put("centre", centreJSON);
-        convocatoriaJSON.put("ensenyament", ensenyamentJSON);
-        alumneJSON.put("convocatoria", convocatoriaJSON);
+            convocatoriaJSON.put("centre", centreJSON);
+            convocatoriaJSON.put("ensenyament", ensenyamentJSON);
+            alumneJSON.put("convocatoria", convocatoriaJSON);
 
-        // DIRECCIO:
-        JSONObject direccioJSON = new JSONObject();
-        String[] direccioKeysJSON = new String[]{"nom", "codiPostal", "numero", "altresDades", "municipi", "provincia", "tipusVia", "pais", "localitat"};
-        for (int i = 0; i < direccioKeysJSON.length; i++){
-            TextField tf = (TextField) gpDireccio.getChildren().get(i);
-            direccioJSON.put(direccioKeysJSON[i], tf.getText());
-        }
+            // DIRECCIO:
+            JSONObject direccioJSON = new JSONObject();
+            String[] direccioKeysJSON = new String[]{"nom", "codiPostal", "numero", "altresDades", "municipi", "provincia", "tipusVia", "pais", "localitat"};
+            for (int i = 0; i < direccioKeysJSON.length; i++){
+                TextField tf = (TextField) gpDireccio.getChildren().get(i);
+                direccioJSON.put(direccioKeysJSON[i], tf.getText());
+            }
 
-        alumneJSON.put("direccio", direccioJSON);
+            alumneJSON.put("direccio", direccioJSON);
 
-        // CENTRE PROCEDENCIA:
+            // CENTRE PROCEDENCIA:
 
-        JSONObject centreProcedenciaJSON = new JSONObject();
-        String[] centreProcedenciaKeysJSON = new String[]{"codiEnsenyament", "nomEnsenyament", "llengua", "nom", "curs", "codi"};
-        for (int i = 0; i < centreProcedenciaKeysJSON.length; i++){
-            TextField tf = (TextField) gpCentreProcedencia.getChildren().get(i);
-            centreProcedenciaJSON.put(centreProcedenciaKeysJSON[i], tf.getText());
-        }
+            JSONObject centreProcedenciaJSON = new JSONObject();
+            String[] centreProcedenciaKeysJSON = new String[]{"codiEnsenyament", "nomEnsenyament", "llengua", "nom", "curs", "codi"};
+            for (int i = 0; i < centreProcedenciaKeysJSON.length; i++){
+                TextField tf = (TextField) gpCentreProcedencia.getChildren().get(i);
+                centreProcedenciaJSON.put(centreProcedenciaKeysJSON[i], tf.getText());
+            }
 
-        alumneJSON.put("centreProcedencia", centreProcedenciaJSON);
-        JSONObject userData = arrayJSON.getJSONObject(pos);
-        String id = userData.getString("_id");
+            alumneJSON.put("centreProcedencia", centreProcedenciaJSON);
+            JSONObject userData = arrayJSON.getJSONObject(pos);
+            String id = userData.getString("_id");
 
-        alumneJSON.put("_id", id);
-        if (!alumneData.isNull("pass")){
-            String pass = alumneData.getString("pass");
-            alumneJSON.put("pass", pass);
-        }
-        else
-            alumneJSON.put("pass", "");
+            alumneJSON.put("_id", id);
+            if (!alumneData.isNull("pass")){
+                String pass = alumneData.getString("pass");
+                alumneJSON.put("pass", pass);
+            }
+            else
+                alumneJSON.put("pass", "");
 
-        if (!alumneData.isNull("perfilRequisits")){
-            String perfil = alumneData.getString("perfilRequisits");
-            alumneJSON.put("perfilRequisits", alumneData.getString("perfilRequisits"));
-        }
-        else
-            alumneJSON.put("perfilRequisits", "");
+            if (!alumneData.isNull("perfilRequisits")){
+                String perfil = alumneData.getString("perfilRequisits");
+                alumneJSON.put("perfilRequisits", alumneData.getString("perfilRequisits"));
+            }
+            else
+                alumneJSON.put("perfilRequisits", "");
 
-        if (!alumneData.isNull("estatRequisits")){
-            JSONArray arrayEstats = alumneData.getJSONArray("estatRequisits");
-            alumneJSON.put("estatRequisits", alumneData.getJSONArray("estatRequisits"));
-        }else
-            alumneJSON.put("estatRequisits", new JSONArray());
+            if (!alumneData.isNull("estatRequisits")){
+                JSONArray arrayEstats = alumneData.getJSONArray("estatRequisits");
+                alumneJSON.put("estatRequisits", alumneData.getJSONArray("estatRequisits"));
+            }else
+                alumneJSON.put("estatRequisits", new JSONArray());
 
-        boolean updated = Data.alumneManager.updateAlumne(alumneJSON);
+            boolean updated = Data.alumneManager.updateAlumne(alumneJSON);
 
-        Alert alert;
-        if (updated){
-            alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert;
+            if (updated){
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("MatriculesAPP | DESKTOP");
+                alert.setHeaderText("Alumno actualizado correctamente!");
+            }else {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("MatriculesAPP | DESKTOP");
+                alert.setHeaderText("Error al actualizar...");
+            }
+            alert.showAndWait();
+        }catch (Exception e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("MatriculesAPP | DESKTOP");
-            alert.setHeaderText("Alumno actualizado correctamente!");
-        }else {
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("MatriculesAPP | DESKTOP");
-            alert.setHeaderText("Error al actualizar...");
+            alert.setHeaderText("S'ha produit un error...");
         }
-        alert.showAndWait();
-
-
     }
 
     /**
