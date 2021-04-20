@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import sample.interfaces.impl.UnitatFormativaImpl;
 import sample.models.Cicle;
@@ -35,6 +36,7 @@ public class DashboardController implements Initializable {
 	@FXML	private ComboBox<Cicle> cmbCicles;
 	@FXML	private Accordion acModul;
 	@FXML   private Button bCSVCicles;
+	private Cicle cicle;
 	private Modul modul;
 
 	private ObservableList<Cicle> ciclesMenu;
@@ -77,7 +79,9 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private void addCicle(ActionEvent event) {
-		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		cicle = null;
+
+		Dialog dialog = new Dialog();
 		dialog.setTitle("MatriculesAPP | DESKTOP");
 		dialog.setHeaderText("Nom i dades del cicle");
 
@@ -143,16 +147,43 @@ public class DashboardController implements Initializable {
 		grid.add(modulGridPane, 2, 5);
 
 		dialog.getDialogPane().setContent(grid);
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == okButtonType)
-				return new Pair<>(nameCicle.getText(), idCicle.getText());
-			return null;
-		});
 
-		dialog.show();
+		Optional<ButtonType> result = dialog.showAndWait();
+		if (result.isPresent() && result.get() == okButtonType) {
+			Cicle cicle = new Cicle();
+			cicle.setCodiCicle(idCicle.getText());
+			cicle.setNomCicle(nameCicle.getText());
+			cicle.setCodiAdaptacioCurs(codiAdapCicle.getText());
+			cicle.setHoresCicle(Integer.parseInt(hoursCicle.getText()));
+			cicle.setDataIniciCicle(Date.from(dataIniciCicle.getValue().atStartOfDay().toInstant(null)));
+			cicle.setModuls(listModulsCicle.getItems());
+			
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("nom", cicle.getNomCicle());
+			jsonObject.put("hores", cicle.getHoresCicle());
+			jsonObject.put("codi", cicle.getCodiCicle());
+			jsonObject.put("codiAdaptacioCurricular", cicle.getCodiAdaptacioCurs());
+			jsonObject.put("dataInici", cicle.getDataIniciCicle().toString());
+			
+			JSONArray modulsJsonArray = new JSONArray();
+			
+			for (Modul modul : cicle.getModuls()) {
+				JSONObject modulJsonObject = new JSONObject();
+				modulJsonObject.put("nomModul", modul.getNomModul());
+				modulJsonObject.put("codiModul", modul.getCodiModul());
+				modulJsonObject.put("duradaMinModul", modul.getDuradaMinModul());
+				modulJsonObject.put("duradaMaxModul", modul.getDuradaMaxModul());
+				modulJsonObject.put("dataIniciModul", modul.getDataIniciModul().toString());
+				modulJsonObject.put("dataFiModul", modul.getDataFiModul().toString());
+				modulsJsonArray.put(modulJsonObject);
+			}
+			jsonObject.put("moduls", modulsJsonArray);
+		}
 	}
 
 	private Modul addModulDialog() {
+		modul = null;
+
 		Dialog dialog = new Dialog();
 		dialog.setTitle("MatriculesAPP | DESKTOP");
 		dialog.setHeaderText("Nom i dades del mòdul");
@@ -244,7 +275,7 @@ public class DashboardController implements Initializable {
 			}
 			return dialogButton;
 		});
-		
+
 		Optional<Pair<String, Modul>> result = dialog.showAndWait();
 		result.ifPresent(action -> {
 			modul = action.getValue();
