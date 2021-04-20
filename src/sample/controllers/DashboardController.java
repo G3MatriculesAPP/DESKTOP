@@ -158,7 +158,6 @@ public class DashboardController implements Initializable {
 	 * getAllCicles()
 	 * Obtiene la información ya parseada de la API y la añade al ComboBox
 	 */
-	@SuppressWarnings("unchecked")
 	public void getAllCicles(){
 
 		if (Data.ciclesList != null){

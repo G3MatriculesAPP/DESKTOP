@@ -45,7 +45,7 @@ public class AlumnesController implements Initializable {
     private ObservableList<Cicle> ciclesMenu;
     private int pos;
     private VBox vBoxTutors;
-    private JSONObject alumneData;
+    public static JSONObject alumneData;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -94,13 +94,18 @@ public class AlumnesController implements Initializable {
         }
     }
 
+    /**
+     * Se obtiene el nombre del ciclo seleccionado y se llama a la API para obtener todos los alumnos que tengan ese ciclo
+     * establecido, una vez obtenidos se añaden y se muestran en una lista.
+     * @param event
+     */
     @FXML
     void getAlumnesByCicle(ActionEvent event){
+        vBoxData.setVisible(false);
         listAlumnes.getItems().clear();
         arrayJSON = Data.alumneManager.getAlumnesByCourse(cmbCicles.getSelectionModel().getSelectedItem().getNomCicle());
         for (int i = 0; i < arrayJSON.length(); i++){
             JSONObject json = arrayJSON.getJSONObject(i);
-            System.out.println(json.toString(4));
             if (json.isNull("dni"))
                 listAlumnes.getItems().add(json.getString("nom") + " " + json.getString("primerCognom") + " " + json.getString("segonCognom") + " \nNIE: " + json.getString("nie"));
             else {
@@ -109,14 +114,27 @@ public class AlumnesController implements Initializable {
         }
     }
 
+    /**
+     * Se obtiene el JSONObject del JSONArray de alumnos y su ID, mediante esa ID se llama a la API para obtener todos los
+     * datos del alumno y se llama a transformData() para mostrar todos los datos
+     * @param event
+     */
     @FXML
     void getDataAlumne(MouseEvent event) {
 
         pos = listAlumnes.getSelectionModel().getSelectedIndex();
+        alumneData = new JSONObject();
         alumneData = Data.alumneManager.getAlumneData(arrayJSON.getJSONObject(pos).getString("_id"));
         transformData(alumneData);
     }
 
+    /**
+     * Recorre entero el JSONObject y por cada campo crea un nuevo TextField con el valor en esa clave del JSONObject
+     * como texto predefinido, si ese valor es variable se crea una ChoiceBox con las diferentes opciones y se establece
+     * cual es la que esta definida en el JSON. Si hay algun campo sin datos se crea un nuevo TextField pero sin texto predefinido
+     * esto se controla desde aqui y desde AlumneImpl.
+     * @param alumneData - JSONObject con todos los datos de 1 alumno
+     */
     private void transformData(JSONObject alumneData){
 
         vBoxData.setVisible(true);
@@ -223,7 +241,11 @@ public class AlumnesController implements Initializable {
     }
 
 
-
+    /**
+     * Recorre todos los TextField y va montando un nuevo JSONObject con los datos en este, los datos clave como la contraseña
+     * id o perfilSeleccionado se obtienen del JSON original para evitar que al actualizar desaparezcan.
+     * @param event
+     */
     @FXML
     void saveAlumne(ActionEvent event) {
         JSONObject alumneJSON = new JSONObject();
@@ -231,8 +253,6 @@ public class AlumnesController implements Initializable {
                 "telefon", "email", "nacionalitat",
                 "dataNaixement", "paisNaixement", "municipiNaixement", "tipusDocument", "",
                 "idRALC", "sexe", "tipusAlumne", "codiCentreAssignat"};
-
-        System.out.println(gridPaneData.getChildren());
 
         for (int i = 0; i < mainKeysJSON.length; i++){
 
@@ -262,7 +282,6 @@ public class AlumnesController implements Initializable {
             }else{
                 TextField tf = (TextField) gridPaneData.getChildren().get(i);
                 alumneJSON.put(mainKeysJSON[i], tf.getText());
-                System.out.println(i + " = " + mainKeysJSON[i] + " // " + tf.getText());
             }
 
         }
@@ -331,7 +350,6 @@ public class AlumnesController implements Initializable {
 
         alumneJSON.put("centreProcedencia", centreProcedenciaJSON);
         JSONObject userData = arrayJSON.getJSONObject(pos);
-        System.out.println(userData.toString());
         String id = userData.getString("_id");
 
         alumneJSON.put("_id", id);
@@ -355,8 +373,6 @@ public class AlumnesController implements Initializable {
         }else
             alumneJSON.put("estatRequisits", new JSONArray());
 
-
-        System.out.println(alumneJSON.toString(4));
         boolean updated = Data.alumneManager.updateAlumne(alumneJSON);
 
         Alert alert;
@@ -374,11 +390,48 @@ public class AlumnesController implements Initializable {
 
     }
 
+    /**
+     * Primero se comprueba si el alumno tiene un perfil marcado, si no es asi se muestra un mensaje notificando que este alumno
+     * no tiene perfiles especiales, si es el caso se abre una nueva Stage de ValidarRequisitsController y se le pasa la ID del alumno
+     * el nombre del alumno y el del perfil.
+     * @param event
+     */
     @FXML
     void checkRequisits(ActionEvent event) {
 
+        if (alumneData.isNull("perfilRequisits") || alumneData.getString("perfilRequisits").isEmpty() || alumneData.getString("perfilRequisits").isBlank() || alumneData.getString("perfilRequisits").equals("")){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("MatriculesAPP | DESKTOP");
+            alert.setHeaderText("Aquest alumne no te res a validar");
+            alert.showAndWait();
+        }else {
+            try {
+                Stage stage = new Stage();
+                URL url = new File("src/sample/windows/validarRequisits.fxml").toURI().toURL();
+                FXMLLoader loader = new FXMLLoader(url);
+                Parent root = loader.load();
+                ValidarRequisitsController validarRequisitsController = (ValidarRequisitsController) loader.getController();
+                validarRequisitsController.setIdAlumne(alumneData.getString("_id"));
+                validarRequisitsController.setNomPerfil(alumneData.getString("perfilRequisits"));
+                validarRequisitsController.setNomAlumne(alumneData.getString("nom") + " " + alumneData.getString("primerCognom") + " " + alumneData.getString("segonCognom"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+                validarRequisitsController.getRequisits();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
+    /**
+     * Llama a la API pasandole la ID del usuario, si la api devuelve STATUS 200 se elimna de la lista y se limpian los datos
+     * de la pantalla para evitar confusiones, la propia API lo elimina de la DB. Dependiendo del status se muestra un mensaje
+     * u otro.
+     * @param event
+     */
     @FXML
     void deleteUser(ActionEvent event) {
         pos = listAlumnes.getSelectionModel().getSelectedIndex();
@@ -392,6 +445,10 @@ public class AlumnesController implements Initializable {
             gpConvocatoria.getChildren().clear();
             gpDireccio.getChildren().clear();
             gpCentreProcedencia.getChildren().clear();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("MatriculesAPP | DESKTOP");
+            alert.setHeaderText("Alumno eliminado correctamente!");
+            alert.showAndWait();
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("MatriculesAPP | DESKTOP");
