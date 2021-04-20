@@ -2,7 +2,7 @@
 
 Repositorio de la aplicacion DESKTOP del proyecto MatriculesAPP del Grupo3 (Iván López, Gerard Serret y Xavi Pineda). Desde esta aplicación se gestiona todas las tareas a nivel administrativo y mantenimiento de este.
 
-Para compilar esta aplicación, añade los argumentos de Java que encontrarás a continuación y ejecuta el método main de la clase `sample.MainClass.java`.
+Para compilar esta aplicación, añade las librerías que encontrarás en el directorio `libs` y los argumentos de Java que encontrarás a continuación y ejecuta el método `main` de la clase `sample.MainClass.java`.
 
 ### VM ARGUMENTS
 #### LINUX:
